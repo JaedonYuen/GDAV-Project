@@ -33,6 +33,7 @@ public class HandSystem : MonoBehaviour
                 itemInhand.transform.position = hand.position;
                 itemInhand.transform.SetParent(null);
                 itemInhand = null;
+                
             }
             else
             {
@@ -48,8 +49,11 @@ public class HandSystem : MonoBehaviour
                         itemInhand = hitCollider.gameObject;
 
                         itemInhand.transform.SetParent(hand);
+
                         itemInhand.transform.localPosition = Vector3.zero;
                         itemInhand.transform.localRotation = Quaternion.identity; // Reset rotation to avoid unexpected rotations
+
+                        
                         return;
                     }
                 }
