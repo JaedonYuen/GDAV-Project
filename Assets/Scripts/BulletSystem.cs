@@ -1,0 +1,22 @@
+using UnityEngine;
+
+public class BulletSystem : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        //should check if the bullet hit the player's gun
+        Destroy(gameObject); // Destroy the bullet on collision
+    }
+}
