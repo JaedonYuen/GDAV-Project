@@ -13,6 +13,8 @@ public class GunSystem : MonoBehaviour
     public float spreadAngle = 0f; // Angle in degrees for bullet spread
     public int maxAmmo = 30; // Maximum ammo for the gun
     public float reloadTime = 1f; // Time in seconds to reload
+
+    public float damage = 10f; 
     private int currentAmmo = 0;
     private bool isReloading = false;
     void Start()
