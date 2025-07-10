@@ -8,15 +8,19 @@ public class GunSystem : MonoBehaviour
     public Transform barrel;
     public GameObject bulletPrefab;
     public float bulletSpeed = 20f;
-    public float fireRate = 0.5f; // Time in seconds between shots
-    public int bulletsPerShot = 1; // Number of bullets fired per shot
-    public float spreadAngle = 0f; // Angle in degrees for bullet spread
-    public int maxAmmo = 30; // Maximum ammo for the gun
-    public float reloadTime = 1f; // Time in seconds to reload
+    public float fireRate = 0.5f; 
+    public int bulletsPerShot = 1; 
+    public bool isAutomatic = false; // If true, gun will fire continuously while the trigger is held
+    public float spreadAngle = 0f; 
+    public int maxAmmo = 30; 
+    public float reloadTime = 1f; 
 
     public float damage = 10f; 
     private int currentAmmo = 0;
     private bool isReloading = false;
+    private bool isFiring = false;
+    private bool isTriggered = false; // Only applies when the gun is automatic
+    private Coroutine autoFireCoroutine = null; 
     void Start()
     {
         currentAmmo = maxAmmo;
@@ -37,14 +41,57 @@ public class GunSystem : MonoBehaviour
         isReloading = false;
         Debug.Log("Reload complete! Current ammo: " + currentAmmo);
     }
-    public void Fire()
-    {
+
+    public void Fire(bool buttonState)
+    {   
+        Debug.Log("Fire called with buttonState: " + buttonState);
         if (currentAmmo <= 0 || isReloading)
         {
             Debug.Log("Out of ammo! Reload your gun.");
             return;
         }
 
+        if (isAutomatic)
+        {
+            isTriggered = buttonState;
+            if (buttonState && autoFireCoroutine == null)
+            {
+                autoFireCoroutine = StartCoroutine(AutoFire());
+            }
+            else if (!buttonState && autoFireCoroutine != null)
+            {
+                StopCoroutine(autoFireCoroutine);
+                autoFireCoroutine = null;
+                isFiring = false; // Stop firing when the trigger is released
+            }
+        }
+        else
+        {
+            if (buttonState && !isFiring)
+            {
+                StartCoroutine(fireBullet());
+            }
+        }
+    }
+
+    private IEnumerator AutoFire()
+    {
+        while (currentAmmo > 0 && !isReloading && isTriggered)
+        {
+            if (!isFiring)
+            {
+                StartCoroutine(fireBullet());
+                currentAmmo--;
+                Debug.Log("Fired! Current ammo: " + currentAmmo);
+            }
+            yield return new WaitForSeconds(fireRate);
+        }
+        autoFireCoroutine = null;
+    }
+
+    IEnumerator fireBullet()
+    {
+        isFiring = true;
         for (int i = 0; i < bulletsPerShot; i++)
         {
             float angle = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);
@@ -52,13 +99,17 @@ public class GunSystem : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, barrel.position, bulletRotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = bulletRotation * Vector2.right * bulletSpeed;
-            bullet.GetComponent<BulletSystem>().damage = damage; // Set the bullet's damage
+            bullet.GetComponent<BulletSystem>().damage = damage; 
         }
-
-        currentAmmo--;
-        Debug.Log("Fired! Current ammo: " + currentAmmo);
+        if (!isAutomatic) // Only decrement for semi-auto here
+        {
+            currentAmmo--;
+            Debug.Log("Fired! Current ammo: " + currentAmmo);
+        }
+        yield return new WaitForSeconds(fireRate); 
+        isFiring = false;
     }
-    
+
     public void Reload()
     {
         StartCoroutine(reloadCoroutine());

@@ -8,7 +8,7 @@ public class PlayerMover : MonoBehaviour
     //top down movement, uses the new Unity Input System
     public Rigidbody2D playerRigidbody;
     public float speed = 5f;
-
+    public Transform arm;
     private Vector2 movementInput;
 
     void Start()
@@ -31,7 +31,7 @@ public class PlayerMover : MonoBehaviour
         Move(movementInput);
         // point player to mouse
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        transform.right = mousePosition - (Vector2)transform.position;
+        arm.transform.right = mousePosition - (Vector2)arm.transform.position;
 
     }
 

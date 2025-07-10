@@ -1,3 +1,4 @@
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class HandSystem : MonoBehaviour
@@ -70,7 +71,7 @@ public class HandSystem : MonoBehaviour
         Debug.Log("Jump action triggered");
     }
 
-    public void OnAttack()
+    public void OnAttack(InputValue inputValue)
     {
         Debug.Log("Attack action triggered");
         if (itemInhand != null)
@@ -78,7 +79,7 @@ public class HandSystem : MonoBehaviour
             GunSystem gun = itemInhand.GetComponent<GunSystem>();
             if (gun != null)
             {
-                gun.Fire();
+               gun.Fire(inputValue.isPressed);
             }
         }
         // Implement firing logic here
