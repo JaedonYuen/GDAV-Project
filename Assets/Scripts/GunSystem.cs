@@ -52,6 +52,7 @@ public class GunSystem : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, barrel.position, bulletRotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = bulletRotation * Vector2.right * bulletSpeed;
+            bullet.GetComponent<BulletSystem>().damage = damage; // Set the bullet's damage
         }
 
         currentAmmo--;
