@@ -4,6 +4,7 @@ public class BulletSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public float damage = 10f; 
+    public GameObject impactEffect; // Assign a prefab for the impact effect in the inspector
     void Start()
     {
 
@@ -30,7 +31,8 @@ public class BulletSystem : MonoBehaviour
                 Debug.LogWarning("Enemy does not have an EnemyHealthSystem component.");
             }
         }
-        Destroy(gameObject); 
-        
+        GameObject newImpactFX = Instantiate(impactEffect, transform.position, Quaternion.identity);
+        Destroy(newImpactFX, 2f); // Destroy the impact effect after 2 seconds
+        Destroy(gameObject);
     }
 }
