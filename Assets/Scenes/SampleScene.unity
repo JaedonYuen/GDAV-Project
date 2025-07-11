@@ -205,6 +205,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 1
   damage: 10
+  _currentAmmo: 0
 --- !u!4 &68724435
 Transform:
   m_ObjectHideFlags: 0
@@ -308,6 +309,7 @@ MonoBehaviour:
   maxAmmo: 1000
   reloadTime: 1
   damage: 10
+  _currentAmmo: 0
 --- !u!4 &331258534
 Transform:
   m_ObjectHideFlags: 0
@@ -973,6 +975,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 2
   damage: 10
+  _currentAmmo: 0
 --- !u!1 &586756759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,6 +1133,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 2
   damage: 10
+  _currentAmmo: 0
 --- !u!61 &1001960846
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1927,6 +1931,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 2
   damage: 10
+  _currentAmmo: 0
 --- !u!61 &1641085440
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2370,6 +2375,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1001960848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1955637035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1955637037}
+  - component: {fileID: 1955637036}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1955637036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955637035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a4008b4d1e1454cba767029e844338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 150486513247000308, guid: 62abbfcc8df97c64a8159b367f4611fe, type: 3}
+  maxEnemyCount: 10
+  spawnInterval: 2
+  spawnRadius: 5
+  levelCenter: {fileID: 1955637037}
+--- !u!4 &1955637037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955637035}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1980242325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2552,3 +2606,4 @@ SceneRoots:
   - {fileID: 1333152048}
   - {fileID: 1980242328}
   - {fileID: 1372740817}
+  - {fileID: 1955637037}

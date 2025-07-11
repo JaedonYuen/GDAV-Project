@@ -15,15 +15,24 @@ public class GunSystem : MonoBehaviour
     public int maxAmmo = 30; 
     public float reloadTime = 1f; 
 
-    public float damage = 10f; 
-    private int currentAmmo = 0;
+    public float damage = 10f;
+    
+    [SerializeField] private int _currentAmmo = 0;
+    public int currentAmmo
+    {
+        get { return _currentAmmo; }
+        private set
+        {
+            _currentAmmo = Mathf.Clamp(value, 0, maxAmmo);
+        }
+    }
     private bool isReloading = false;
     private bool isFiring = false;
     private bool isTriggered = false; // Only applies when the gun is automatic
     private Coroutine autoFireCoroutine = null; 
     void Start()
     {
-        currentAmmo = maxAmmo;
+        _currentAmmo = maxAmmo;
     }
 
     // Update is called once per frame
@@ -37,9 +46,9 @@ public class GunSystem : MonoBehaviour
         isReloading = true;
         Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
+        _currentAmmo = maxAmmo;
         isReloading = false;
-        Debug.Log("Reload complete! Current ammo: " + currentAmmo);
+        Debug.Log("Reload complete! Current ammo: " + _currentAmmo);
     }
 
     public void Fire(bool buttonState)
@@ -47,7 +56,8 @@ public class GunSystem : MonoBehaviour
         Debug.Log("Fire called with buttonState: " + buttonState);
         if (currentAmmo <= 0 || isReloading)
         {
-            Debug.Log("Out of ammo! Reload your gun.");
+            Debug.Log("Out of ammo! Reloading your gun.");
+            Reload();
             return;
         }
 
@@ -81,8 +91,8 @@ public class GunSystem : MonoBehaviour
             if (!isFiring)
             {
                 StartCoroutine(fireBullet());
-                currentAmmo--;
-                Debug.Log("Fired! Current ammo: " + currentAmmo);
+                _currentAmmo--;
+                Debug.Log("Fired! Current ammo: " + _currentAmmo);
             }
             yield return new WaitForSeconds(fireRate);
         }
@@ -103,8 +113,8 @@ public class GunSystem : MonoBehaviour
         }
         if (!isAutomatic) // Only decrement for semi-auto here
         {
-            currentAmmo--;
-            Debug.Log("Fired! Current ammo: " + currentAmmo);
+            _currentAmmo--;
+            Debug.Log("Fired! Current ammo: " + _currentAmmo);
         }
         yield return new WaitForSeconds(fireRate); 
         isFiring = false;
