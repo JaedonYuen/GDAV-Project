@@ -23,12 +23,12 @@ public class EnemyHealthSystem : MonoBehaviour
             Die();
         }
     }
-    
+
     public void TakeDamage(float damage)
     {
         _currentHealth -= damage;
         Debug.Log($"Enemy took {damage} damage, current health: {_currentHealth}");
-        
+
         if (_currentHealth <= 0)
         {
             Die();
@@ -40,5 +40,10 @@ public class EnemyHealthSystem : MonoBehaviour
         Debug.Log("Enemy died");
         // Add death logic here, such as playing an animation or destroying the object
         Destroy(gameObject);
+    }
+    
+    public float GetHealthPercentage()
+    {
+        return _currentHealth / maxHealth;
     }
 }
