@@ -14,8 +14,9 @@ public class ShopItem
 
 public class ShopSystem : MonoBehaviour
 {
-    
+
     public List<ShopItem> shopItems; // List of items available in the shop
+    public GameObject shopCanvasUI; // Canvas for the shop UI
     public GameObject shopContainerUI; // Place to store all the items in the shop
     public ShopSlotSystem shopSlot; // Handles spawning of items in the shop
 
@@ -29,5 +30,24 @@ public class ShopSystem : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Player entered the shop trigger area.");
+        if (other.CompareTag("Player"))
+        {
+            // Show the shop UI
+            shopCanvasUI.SetActive(true);
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            // Hide the shop UI
+            shopCanvasUI.SetActive(false);
+        }
     }
 }
