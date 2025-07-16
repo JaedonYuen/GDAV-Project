@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,8 +12,15 @@ public class PlayerMover : MonoBehaviour
     public Transform arm;
     private Vector2 movementInput;
 
+    private SpriteRenderer spriteRenderer;
+
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            Debug.LogError("SpriteRenderer component is not found on the GameObject.");
+        }
 
         if (playerRigidbody == null)
         {
@@ -29,6 +37,15 @@ public class PlayerMover : MonoBehaviour
     {
         // Move the player based on the input received
         Move(movementInput);
+        // Flip the player sprite based on movement direction
+        if (movementInput.x > 0)
+        {
+            spriteRenderer.flipX = false; // Face right
+        }
+        else if (movementInput.x < 0)
+        {
+            spriteRenderer.flipX = true; // Face left
+        }
         // point player to mouse
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         arm.transform.right = mousePosition - (Vector2)arm.transform.position;

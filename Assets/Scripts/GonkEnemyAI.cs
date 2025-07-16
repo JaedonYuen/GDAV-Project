@@ -13,7 +13,7 @@ public class GonkEnemyAI : MonoBehaviour
 
     public float enemyThinkInterval = 0.5f; // How often the enemy checks for the player
 
-    public Rigidbody2D enemyRigidbody; 
+    public Rigidbody2D enemyRigidbody;
 
     void Start()
     {
@@ -34,7 +34,7 @@ public class GonkEnemyAI : MonoBehaviour
             if (player != null)
             {
                 // Move towards the player
-                
+
                 Vector2 direction = (player.transform.position - transform.position).normalized;
                 enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
             }
@@ -64,5 +64,18 @@ public class GonkEnemyAI : MonoBehaviour
             }
         }
         return null;
+    }
+
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerHealthSystem playerHealth = collision.gameObject.GetComponent<PlayerHealthSystem>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(10); // Example damage value
+            }
+        }
     }
 }
