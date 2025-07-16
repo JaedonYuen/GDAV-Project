@@ -36,7 +36,7 @@ public class GonkEnemyAI : MonoBehaviour
                 // Move towards the player
                 
                 Vector2 direction = (player.transform.position - transform.position).normalized;
-                enemyRigidbody.MovePosition(enemyRigidbody.position + direction * speed * Time.fixedDeltaTime);
+                enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
             }
             yield return new WaitForSeconds(enemyThinkInterval);
         }
@@ -51,15 +51,16 @@ public class GonkEnemyAI : MonoBehaviour
             if (hitCollider.CompareTag("Player"))
             {
                 // check to see if we can see the player
-                Vector2 directionToPlayer = (hitCollider.transform.position - transform.position).normalized;
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, detectionRange);
-                if (hit.collider != null && hit.collider.CompareTag("Player"))
-                {
-                    // Player is detected, implement behavior here
-                    //Debug.Log("Player detected by Gonk enemy!");
-                    // Example: Move towards the player
-                    return hitCollider;
-                }
+                // Vector2 directionToPlayer = (hitCollider.transform.position - transform.position).normalized;
+                // RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, detectionRange);
+                // if (hit.collider != null && hit.collider.CompareTag("Player"))
+                // {
+                //     // Player is detected, implement behavior here
+                //     //Debug.Log("Player detected by Gonk enemy!");
+                //     // Example: Move towards the player
+                //     return hitCollider;
+                // }
+                return hitCollider; // Return the player collider if detected
             }
         }
         return null;
