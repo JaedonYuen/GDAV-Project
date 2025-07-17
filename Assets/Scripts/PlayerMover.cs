@@ -10,6 +10,7 @@ public class PlayerMover : MonoBehaviour
     public Rigidbody2D playerRigidbody;
     public float speed = 5f;
     public Transform arm;
+    public SpriteRenderer armSprite;
     private Vector2 movementInput;
 
     private SpriteRenderer spriteRenderer;
@@ -41,10 +42,12 @@ public class PlayerMover : MonoBehaviour
         if (movementInput.x > 0)
         {
             spriteRenderer.flipX = false; // Face right
+            armSprite.sortingOrder = 1; // Ensure arm is in front
         }
         else if (movementInput.x < 0)
         {
             spriteRenderer.flipX = true; // Face left
+            armSprite.sortingOrder = -1; // Ensure arm is behind
         }
         // point player to mouse
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
