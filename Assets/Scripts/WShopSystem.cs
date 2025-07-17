@@ -39,9 +39,7 @@ public class WShopSystem : MonoBehaviour
                 GameObject button = Instantiate(shopButtonPrefab, shopContainerUI.transform);
                 button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
                 button.GetComponent<Button>().onClick.AddListener(() => PurchaseItem(item.itemName));
-                // move the button to the correct position
-                RectTransform buttonRect = button.GetComponent<RectTransform>();
-                buttonRect.anchoredPosition = new Vector2(buttonRect.anchoredPosition.x, (-buttonRect.rect.height - padding) * (shopItems.IndexOf(item)+1));
+               
 
             }
         }
