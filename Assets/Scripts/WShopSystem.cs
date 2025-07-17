@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
+
 [Serializable]
 public class WeaponItem
 {
@@ -20,9 +23,32 @@ public class WShopSystem : MonoBehaviour
     public GameObject shopContainerUI; // Place to store all the items in the shop
     public ShopSpawner shopSpawner; // Handles spawning of items in the shop
 
+    public GameObject shopButtonPrefab;
+
+    public int padding = 10; // Padding between buttons in the shop UI
+
 
     void Start()
     {
+        // initialize the shop UI
+
+        if (shopContainerUI != null)
+        {
+            foreach (var item in shopItems)
+            {
+                GameObject button = Instantiate(shopButtonPrefab, shopContainerUI.transform);
+                button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
+                button.GetComponent<Button>().onClick.AddListener(() => PurchaseItem(item.itemName));
+                // move the button to the correct position
+                RectTransform buttonRect = button.GetComponent<RectTransform>();
+                buttonRect.anchoredPosition = new Vector2(buttonRect.anchoredPosition.x, (-buttonRect.rect.height - padding) * (shopItems.IndexOf(item)+1));
+
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Shop container UI is not set.");
+        }
 
     }
 

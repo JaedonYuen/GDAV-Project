@@ -10,10 +10,16 @@ public class GonkEnemyAI : MonoBehaviour
 
     public float speed = 2f; // Speed of the Gonk enemy
     public float detectionRange = 5f; // Range within which the Gonk enemy detects the player
-
     public float enemyThinkInterval = 0.5f; // How often the enemy checks for the player
-
+    public float enemyFireInterval = 0.5f; // How often the enemy fires at the player
+    public float enemyFireRate = 1f; // Rate at which the enemy fires
     public Rigidbody2D enemyRigidbody;
+    public GunSystem enemyWeaponSystem; // Reference to the enemy's weapon system
+    public Transform enemyArm;
+    
+
+    private GameObject player; // Reference to the player GameObject
+
 
     void Start()
     {
@@ -22,10 +28,42 @@ public class GonkEnemyAI : MonoBehaviour
             enemyRigidbody = GetComponent<Rigidbody2D>();
         }
         Debug.Log("Gonk Enemy AI started.");
-        StartCoroutine(enemyLoop());
+        StartCoroutine(enemyFireLoop());
+        StartCoroutine(enemyMovementLoop());
     }
 
-    IEnumerator enemyLoop()
+    void Update()
+    {
+        // This can be used for additional logic if needed
+        if (player != null)
+        {
+            // Point the arm towards the player if detected
+            Vector2 PlayerPosition = player != null ? player.transform.position : Vector2.zero;
+            Vector2 direction = (PlayerPosition - (Vector2)enemyArm.position).normalized;
+            enemyArm.right = direction;
+
+        }
+        else
+        {
+            // If the player is not detected, reset the arm direction
+            enemyArm.right = Vector2.right; // Reset to default direction
+        }
+        
+    }
+    IEnumerator enemyFireLoop()
+    {
+        while (true)
+        {
+            if (player != null)
+            {
+                enemyWeaponSystem.Fire(true);
+                yield return new WaitForSeconds(enemyFireInterval); // Wait before checking again
+                enemyWeaponSystem.Fire(false);
+            }
+            yield return new WaitForSeconds(enemyFireRate); // Wait for the fire rate before firing again
+        }
+    }
+    IEnumerator enemyMovementLoop()
     {
         while (true)
         {
@@ -34,9 +72,14 @@ public class GonkEnemyAI : MonoBehaviour
             if (player != null)
             {
                 // Move towards the player
-
                 Vector2 direction = (player.transform.position - transform.position).normalized;
                 enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
+                this.player = player.gameObject;
+            }
+            else
+            {
+                // If the player is not detected, stop moving
+                this.player = null; // Reset player reference
             }
             yield return new WaitForSeconds(enemyThinkInterval);
         }
