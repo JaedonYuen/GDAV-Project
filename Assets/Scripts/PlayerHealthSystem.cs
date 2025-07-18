@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class PlayerHealthSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -13,10 +13,13 @@ public class PlayerHealthSystem : MonoBehaviour
             currentHealth = Mathf.Clamp(value, 0, maxHealth);
         }
     }
+    public float healthRegenRate = .5f; // time in seconds to regenerate health
+    public float healthRegenStep = 5f; // Health regeneration step amount
 
     void Start()
     {
         _currentHealth = maxHealth;
+        StartCoroutine(RegenerateHealth());
     }
 
     // Update is called once per frame
@@ -25,6 +28,15 @@ public class PlayerHealthSystem : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Die();
+        }
+    }
+
+    IEnumerator RegenerateHealth()
+    {
+        while (_currentHealth < maxHealth)
+        {
+            Heal(healthRegenStep);
+            yield return new WaitForSeconds(healthRegenRate);
         }
     }
 

@@ -763,7 +763,7 @@ MonoBehaviour:
   fireRate: 0.5
   bulletsPerShot: 1
   isAutomatic: 0
-  spreadAngle: 0
+  spreadAngle: 15
   maxAmmo: 30
   reloadTime: 1
   damage: 10

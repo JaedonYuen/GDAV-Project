@@ -23,10 +23,13 @@ public class GameSystem : MonoBehaviour
     public int maxEnemyCount = 10;
     //private int currentEnemyCount = 0;
     public float spawnInterval = 2f;
+    public float waveInterval = 5f; // Variance in spawn interval to add randomness
 
     public float spawnRadius = 5f; // Radius around the level center to spawn enemies
 
     public Transform levelCenter;
+
+    public GameObject barrier;
 
     public int currentWaveLevel = 1; // Current wave level, can be used to scale difficulty
     private int _currentWaveLevel
@@ -59,19 +62,64 @@ public class GameSystem : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        while (countEnemies() < maxEnemyCount)
+        while (true)
         {
-            //grabn a new enemy type based on the current wave level
+            barrier.SetActive(false);
+            // Wait for the next wave interval
+            yield return new WaitForSeconds(waveInterval);
+            barrier.SetActive(true);
+            // Reset the current wave level
+            _currentWaveLevel++;
 
-            EnemyType enemyType = Array.Find(enemyTypes, e => e.minimumWaveLevel <= _currentWaveLevel && e.maximumWaveLevel >= _currentWaveLevel && UnityEngine.Random.value < e.spawnChance);
-            if (enemyType != null)
+            // Spawn enemies based on the current wave level
+            for (int i = 0; i < maxEnemyCount; i++)
             {
-                GameObject enemy = Instantiate(enemyType.prefab, GetRandomSpawnPosition(), Quaternion.identity);
+                // Choose a random enemy type based on spawn chance and wave level
+                EnemyType enemyType = chooseEnemyType();
+                if (enemyType != null)
+                {
+                    Vector3 spawnPosition = GetRandomSpawnPosition();
+                    Instantiate(enemyType.prefab, spawnPosition, Quaternion.identity);
+                }
+
+                // Wait for the spawn interval before spawning the next set of enemies
+                yield return new WaitForSeconds(spawnInterval);
             }
-            yield return new WaitForSeconds(spawnInterval);
+
+            
         }
         
     }
+
+    EnemyType chooseEnemyType()
+    {
+        float totalChance = 0f;
+        foreach (var enemyType in enemyTypes)
+        {
+            if (_currentWaveLevel >= enemyType.minimumWaveLevel && _currentWaveLevel <= enemyType.maximumWaveLevel)
+            {
+                totalChance += enemyType.spawnChance;
+            }
+        }
+
+        float randomValue = UnityEngine.Random.Range(0, totalChance);
+        float cumulativeChance = 0f;
+
+        foreach (var enemyType in enemyTypes)
+        {
+            if (_currentWaveLevel >= enemyType.minimumWaveLevel && _currentWaveLevel <= enemyType.maximumWaveLevel)
+            {
+                cumulativeChance += enemyType.spawnChance;
+                if (randomValue < cumulativeChance)
+                {
+                    return enemyType;
+                }
+            }
+        }
+
+        return null; // No suitable enemy type found
+    }
+
     // Update is called once per frame
     void Update()
         {
