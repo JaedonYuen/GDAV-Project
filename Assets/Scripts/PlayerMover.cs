@@ -11,9 +11,12 @@ public class PlayerMover : MonoBehaviour
     public float speed = 5f;
     public Transform arm;
     public SpriteRenderer armSprite;
+    public PlayerModifiers playerModifiers; // Reference to PlayerModifiers script
     private Vector2 movementInput;
 
     private SpriteRenderer spriteRenderer;
+
+    private float modifiedSpeed;
 
     void Start()
     {
@@ -34,8 +37,11 @@ public class PlayerMover : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        // Apply any modifier
+        modifiedSpeed = speed * (playerModifiers?.currentSpeedModifier ?? 1f);
+
         // Move the player based on the input received
         Move(movementInput);
         // Flip the player sprite based on movement direction
@@ -66,7 +72,7 @@ public class PlayerMover : MonoBehaviour
     {
         if (playerRigidbody != null)
         {
-            playerRigidbody.linearVelocity = direction * speed;
+            playerRigidbody.linearVelocity = direction * modifiedSpeed;
         }
         else
         {

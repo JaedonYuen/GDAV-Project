@@ -14,8 +14,9 @@ public class GunSystem : MonoBehaviour
     public float spreadAngle = 0f; 
     public int maxAmmo = 30; 
     public float reloadTime = 1f; 
-
     public float damage = 10f;
+
+    public bool belongsToPlayer = false; 
     
     [SerializeField] private int _currentAmmo = 0;
     public int currentAmmo
@@ -109,7 +110,18 @@ public class GunSystem : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, barrel.position, bulletRotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = bulletRotation * Vector2.right * bulletSpeed;
-            bullet.GetComponent<BulletSystem>().damage = damage; 
+            float modifiedDamage = damage;
+            if (belongsToPlayer)
+            {
+                modifiedDamage *= GetComponent<PlayerModifiers>()?.currentDamageModifier ?? 1f;
+            }
+            else
+            {
+                modifiedDamage *= GetComponent<PlayerModifiers>()?.currentEnemyDamageModifier ?? 1f;
+            }
+
+            bullet.GetComponent<BulletSystem>().damage = modifiedDamage;
+            Destroy(bullet, 30f); // Destroy bullet after 30 seconds to prevent memory leaks
         }
         if (!isAutomatic) // Only decrement for semi-auto here
         {

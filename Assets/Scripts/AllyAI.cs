@@ -1,18 +1,13 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
-
-public class GonkEnemyAI : MonoBehaviour
+using System.Collections;
+public class AllyAI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // this script is purely a prototype 
-    //name is a ref to cyberpunk2077
-
     public float speed = 2f; // Speed of the Gonk enemy
     public float detectionRange = 5f; // Range within which the Gonk enemy detects the player
     public float enemyThinkInterval = 0.5f; // How often the enemy checks for the player
     public float enemyFireInterval = 0.5f; // How often the enemy fires at the player
     public float enemyFireRate = 1f; // Rate at which the enemy fires
+    public float distanceToPlayer = 3f; // Distance to maintain from the player
     public Rigidbody2D enemyRigidbody;
     public GunSystem enemyWeaponSystem; // Reference to the enemy's weapon system
     public Transform enemyArm;
@@ -27,7 +22,7 @@ public class GonkEnemyAI : MonoBehaviour
         {
             enemyRigidbody = GetComponent<Rigidbody2D>();
         }
-        Debug.Log("Gonk Enemy AI started.");
+        Debug.Log("Ally AI started.");
         StartCoroutine(enemyFireLoop());
         StartCoroutine(enemyMovementLoop());
     }
@@ -72,9 +67,22 @@ public class GonkEnemyAI : MonoBehaviour
             if (player != null)
             {
                 // Move towards the player
-                Vector2 direction = (player.transform.position - transform.position).normalized;
-                enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
-                this.player = player.gameObject;
+
+                float distance = Vector2.Distance(transform.position, player.transform.position);
+
+                if (distance > distanceToPlayer)
+                {
+                    Vector2 direction = (player.transform.position - transform.position).normalized;
+                    enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
+                    this.player = player.gameObject;
+                }
+                else
+                {
+                    //kick back to break
+                    Vector2 direction = (transform.position - player.transform.position).normalized;
+                    enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
+                    this.player = player.gameObject;
+                }
             }
             else
             {
@@ -91,7 +99,7 @@ public class GonkEnemyAI : MonoBehaviour
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRange);
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Player"))
+            if (hitCollider.CompareTag("Enemy"))
             {
                 // check to see if we can see the player
                 // Vector2 directionToPlayer = (hitCollider.transform.position - transform.position).normalized;
