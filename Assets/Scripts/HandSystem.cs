@@ -66,10 +66,7 @@ public class HandSystem : MonoBehaviour
         }
     }
 
-    public void OnJump()
-    {
-        Debug.Log("Jump action triggered");
-    }
+    
 
     public void OnAttack(InputValue inputValue)
     {

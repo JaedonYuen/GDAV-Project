@@ -67,7 +67,11 @@ public class PlayerMover : MonoBehaviour
     {
         movementInput = inputValue.Get<Vector2>();
     }
-
+    public void OnJump()
+    {
+        Debug.Log("Jump action triggered");
+    }
+    
     public void Move(Vector2 direction)
     {
         if (playerRigidbody != null)
@@ -79,6 +83,7 @@ public class PlayerMover : MonoBehaviour
             Debug.LogError("Rigidbody2D component is not assigned.");
         }
     }
+
     
     
 }

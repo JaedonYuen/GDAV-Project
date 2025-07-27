@@ -194,9 +194,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   detectionRange: 100
-  enemyThinkInterval: 1
+  enemyThinkInterval: 0.5
   enemyFireInterval: 1
   enemyFireRate: 2
+  distanceToPlayer: 5
   enemyRigidbody: {fileID: 0}
   enemyWeaponSystem: {fileID: 5855432562316786908}
   enemyArm: {fileID: 2094478670961362839}
@@ -767,6 +768,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 1
   damage: 10
+  belongsToPlayer: 0
   _currentAmmo: 0
 --- !u!1 &5800556746511329511
 GameObject:
