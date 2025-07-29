@@ -4,10 +4,17 @@ public class EnemyHealthSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public float maxHealth = 100f;
+    public int rewardOnDeath = 50; // Reward given to the player when the enemy dies
 
-    // Method 1: Public property with private setter (recommended for Unity Inspector)
-    [SerializeField] private float _currentHealth = 0f;
-    public float currentHealth => _currentHealth; // Read-only property
+    private float _currentHealth = 0f;
+    public float currentHealth 
+    {
+        get => _currentHealth;
+        private set
+        {
+            _currentHealth = Mathf.Clamp(value, 0, maxHealth);
+        }
+    }
 
 
     void Start()
@@ -39,6 +46,17 @@ public class EnemyHealthSystem : MonoBehaviour
     {
         Debug.Log("Enemy died");
         // Add death logic here, such as playing an animation or destroying the object
+        PlayerCurrencyManager playerCurrencyManager = FindFirstObjectByType<PlayerCurrencyManager>();
+        if (playerCurrencyManager != null)
+        {
+            playerCurrencyManager.AddCredits(rewardOnDeath);
+            Debug.Log($"Player rewarded with {rewardOnDeath} credits.");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerCurrencyManager not found in the scene.");
+        }
+
         Destroy(gameObject);
     }
     

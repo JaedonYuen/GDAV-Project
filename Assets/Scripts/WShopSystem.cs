@@ -17,6 +17,7 @@ public class WeaponItem
 
 public class WShopSystem : MonoBehaviour
 {
+    public PlayerCurrencyManager playerCurrencyManager; // Reference to the player's currency manager
 
     public List<WeaponItem> shopItems; // List of items available in the shop
     public GameObject shopCanvasUI; // Canvas for the shop UI
@@ -24,8 +25,8 @@ public class WShopSystem : MonoBehaviour
     public ShopSpawner shopSpawner; // Handles spawning of items in the shop
 
     public GameObject shopButtonPrefab;
+    public TextMeshProUGUI creditsText; // Text to display player's credits
 
-    public int padding = 10; // Padding between buttons in the shop UI
 
 
     void Start()
@@ -39,8 +40,6 @@ public class WShopSystem : MonoBehaviour
                 GameObject button = Instantiate(shopButtonPrefab, shopContainerUI.transform);
                 button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
                 button.GetComponent<Button>().onClick.AddListener(() => PurchaseItem(item.itemName));
-               
-
             }
         }
         else
@@ -53,16 +52,23 @@ public class WShopSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // Update the credits text
+        if (creditsText != null)
+        {
+            if (playerCurrencyManager != null)
+            {
+                creditsText.text = "Credits: " + playerCurrencyManager.credits.ToString();
+            }
+        }
     }
 
-    
+
 
     public void PurchaseItem(string itemName)
     {
         // Find the item in the shopItems list
         WeaponItem item = shopItems.Find(i => i.itemName.Equals(itemName, StringComparison.OrdinalIgnoreCase));
-        
+
         if (item == null)
         {
             Debug.LogWarning("Item not found: " + itemName);
@@ -76,8 +82,19 @@ public class WShopSystem : MonoBehaviour
             return;
         }
 
-        // Proceed with purchasing the item
-        BuyItem(item);
+        // Check if the player can afford the item
+        if (playerCurrencyManager.CanAfford(item.price))
+        {
+            // Deduct the item price from the player's currency
+            playerCurrencyManager.SpendCredits(item.price);
+
+            // Buy the item
+            BuyItem(item);
+        }
+        else
+        {
+            Debug.LogWarning("Not enough credits to purchase: " + itemName);
+        }
     }
     void BuyItem(WeaponItem item){
         if (item != null && !item.isPurchased)
@@ -89,6 +106,7 @@ public class WShopSystem : MonoBehaviour
 
             // Spawn the item in the game world
             shopSpawner.SpawnItem(item.itemPrefab);
+
         }
     }
 }
