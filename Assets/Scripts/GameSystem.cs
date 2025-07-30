@@ -20,8 +20,7 @@ public class GameSystem : MonoBehaviour
 
 
     public EnemyType[] enemyTypes; // Array of enemy types to spawn
-    public int maxEnemyCount = 10;
-    //private int currentEnemyCount = 0;
+    public int maxEnemyCount = 10; //private int currentEnemyCount = 0;
     public float spawnInterval = 2f;
     public float waveInterval = 5f; // Variance in spawn interval to add randomness
 
@@ -30,6 +29,9 @@ public class GameSystem : MonoBehaviour
     public Transform levelCenter;
 
     public GameObject barrier;
+
+    private bool waveActive = false; // Flag to check if a wave is currently active
+
 
     public int currentWaveLevel = 1; // Current wave level, can be used to scale difficulty
     private int _currentWaveLevel
@@ -43,7 +45,7 @@ public class GameSystem : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
+        
     }
 
     private Vector3 GetRandomSpawnPosition()
@@ -62,33 +64,29 @@ public class GameSystem : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        while (true)
+
+        barrier.SetActive(true);
+        waveActive = true;
+        // Reset the current wave level
+        _currentWaveLevel++;
+
+        // Spawn enemies based on the current wave level
+        for (int i = 0; i < maxEnemyCount; i++)
         {
-            barrier.SetActive(false);
-            // Wait for the next wave interval
-            yield return new WaitForSeconds(waveInterval);
-            barrier.SetActive(true);
-            // Reset the current wave level
-            _currentWaveLevel++;
-
-            // Spawn enemies based on the current wave level
-            for (int i = 0; i < maxEnemyCount; i++)
+            // Choose a random enemy type based on spawn chance and wave level
+            EnemyType enemyType = chooseEnemyType();
+            if (enemyType != null)
             {
-                // Choose a random enemy type based on spawn chance and wave level
-                EnemyType enemyType = chooseEnemyType();
-                if (enemyType != null)
-                {
-                    Vector3 spawnPosition = GetRandomSpawnPosition();
-                    Instantiate(enemyType.prefab, spawnPosition, Quaternion.identity);
-                }
-
-                // Wait for the spawn interval before spawning the next set of enemies
-                yield return new WaitForSeconds(spawnInterval);
+                Vector3 spawnPosition = GetRandomSpawnPosition();
+                Instantiate(enemyType.prefab, spawnPosition, Quaternion.identity);
             }
 
-            
+            // Wait for the spawn interval before spawning the next set of enemies
+            yield return new WaitForSeconds(spawnInterval);
         }
-        
+        barrier.SetActive(false);
+        waveActive = false;
+
     }
 
     EnemyType chooseEnemyType()
@@ -120,9 +118,12 @@ public class GameSystem : MonoBehaviour
         return null; // No suitable enemy type found
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartWave()
+    {
+        if (!waveActive)
         {
-
+            StartCoroutine(SpawnEnemies());
         }
+    }
+    
 }

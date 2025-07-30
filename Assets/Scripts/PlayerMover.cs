@@ -69,7 +69,13 @@ public class PlayerMover : MonoBehaviour
     }
     public void OnJump()
     {
-        Debug.Log("Jump action triggered");
+        //temp thing to trigger waves
+        GameSystem gameSystem = FindFirstObjectByType<GameSystem>();
+        if (gameSystem != null)
+        {
+            gameSystem.StartWave();
+        }
+
     }
     
     public void Move(Vector2 direction)

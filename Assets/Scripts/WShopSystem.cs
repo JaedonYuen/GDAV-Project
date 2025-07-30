@@ -38,7 +38,7 @@ public class WShopSystem : MonoBehaviour
             foreach (var item in shopItems)
             {
                 GameObject button = Instantiate(shopButtonPrefab, shopContainerUI.transform);
-                button.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = $"{item.itemName} - {item.price} C";
                 button.GetComponent<Button>().onClick.AddListener(() => PurchaseItem(item.itemName));
             }
         }

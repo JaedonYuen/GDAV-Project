@@ -26,7 +26,7 @@ public class BasicEnemyAI : MonoBehaviour
         {
             enemyRigidbody = GetComponent<Rigidbody2D>();
         }
-        Debug.Log("Gonk Enemy AI started.");
+        //Debug.Log("Gonk Enemy AI started.");
         StartCoroutine(enemyFireLoop());
         StartCoroutine(enemyMovementLoop());
     }
@@ -66,7 +66,7 @@ public class BasicEnemyAI : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("true");
+            //Debug.Log("true");
             Collider2D player = CheckForPlayer();
             if (player != null)
             {
@@ -75,7 +75,7 @@ public class BasicEnemyAI : MonoBehaviour
 
                 // Move towards the player
                 float distance = Vector2.Distance(transform.position, player.transform.position);
-                Debug.Log(distance);
+                //Debug.Log(distance);
                 if (distance > distanceToPlayer)
                 {
                     enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);

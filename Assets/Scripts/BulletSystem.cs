@@ -33,7 +33,14 @@ public class BulletSystem : MonoBehaviour
             }
             else if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damage);
+                PlayerModifiers playerModifiers = FindFirstObjectByType<PlayerModifiers>();
+                float finalDamage = 0f;
+                if (playerModifiers != null)
+                {
+                    // Apply damage reduction if playerModifiers is available
+                    finalDamage = damage * playerModifiers.currentDamageModifier;
+                }
+                playerHealth.TakeDamage(finalDamage);
             }
             else
             {

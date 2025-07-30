@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  _currentHealth: 0
+  rewardOnDeath: 50
 --- !u!61 &7831936648649682651
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -192,9 +192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf8ebdd9fd82e6a49b45d7bc6802759a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 8
   detectionRange: 100
-  enemyThinkInterval: 0.5
+  enemyThinkInterval: 0.2
   enemyFireInterval: 0.5
   enemyFireRate: 1
   distanceToPlayer: 5

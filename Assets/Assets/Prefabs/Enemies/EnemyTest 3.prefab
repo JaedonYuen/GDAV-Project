@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  _currentHealth: 0
+  rewardOnDeath: 50
 --- !u!61 &7831936648649682651
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -194,10 +194,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   detectionRange: 100
-  enemyThinkInterval: 0.5
+  enemyThinkInterval: 0.1
   enemyFireInterval: 1
   enemyFireRate: 2
-  distanceToPlayer: 15
+  distanceToPlayer: 20
   enemyRigidbody: {fileID: 0}
   enemyWeaponSystem: {fileID: 5855432562316786908}
   enemyArm: {fileID: 2094478670961362839}
@@ -760,7 +760,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barrel: {fileID: 862056188768155450}
   bulletPrefab: {fileID: 4521746727051186594, guid: 9f82ed58c58ad914ab56539248691eba, type: 3}
-  bulletSpeed: 50
+  bulletSpeed: 100
   fireRate: 0.1
   bulletsPerShot: 1
   isAutomatic: 0
@@ -768,6 +768,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 1
   damage: 10
+  belongsToPlayer: 0
   _currentAmmo: 0
 --- !u!1 &5800556746511329511
 GameObject:

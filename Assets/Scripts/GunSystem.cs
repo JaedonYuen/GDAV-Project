@@ -45,19 +45,19 @@ public class GunSystem : MonoBehaviour
     IEnumerator reloadCoroutine()
     {
         isReloading = true;
-        Debug.Log("Reloading...");
+        //Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadTime);
         _currentAmmo = maxAmmo;
         isReloading = false;
-        Debug.Log("Reload complete! Current ammo: " + _currentAmmo);
+        //Debug.Log("Reload complete! Current ammo: " + _currentAmmo);
     }
 
     public void Fire(bool buttonState)
     {   
-        Debug.Log("Fire called with buttonState: " + buttonState);
+        //Debug.Log("Fire called with buttonState: " + buttonState);
         if (currentAmmo <= 0 || isReloading)
         {
-            Debug.Log("Out of ammo! Reloading your gun.");
+            //Debug.Log("Out of ammo! Reloading your gun.");
             Reload();
             return;
         }
@@ -93,7 +93,7 @@ public class GunSystem : MonoBehaviour
             {
                 StartCoroutine(fireBullet());
                 _currentAmmo--;
-                Debug.Log("Fired! Current ammo: " + _currentAmmo);
+                //Debug.Log("Fired! Current ammo: " + _currentAmmo);
             }
             yield return new WaitForSeconds(fireRate);
         }
@@ -126,7 +126,7 @@ public class GunSystem : MonoBehaviour
         if (!isAutomatic) // Only decrement for semi-auto here
         {
             _currentAmmo--;
-            Debug.Log("Fired! Current ammo: " + _currentAmmo);
+            //Debug.Log("Fired! Current ammo: " + _currentAmmo);
         }
         yield return new WaitForSeconds(fireRate); 
         isFiring = false;
