@@ -12,6 +12,7 @@ public class BasicEnemyAI : MonoBehaviour
     public float enemyFireInterval = 0.5f; // How often the enemy fires at the player
     public float enemyFireRate = 1f; // Rate at which the enemy fires
     public float distanceToPlayer = 5f; // Distance to maintain from the player
+    public float distanceToFellowEnemy = 0.5f; // Distance to maintain from fellow enemies
     public Rigidbody2D enemyRigidbody;
     public GunSystem enemyWeaponSystem; // Reference to the enemy's weapon system
     public Transform enemyArm;
@@ -70,9 +71,7 @@ public class BasicEnemyAI : MonoBehaviour
             Collider2D player = CheckForPlayer();
             if (player != null)
             {
-                
                 Vector2 direction = (player.transform.position - transform.position).normalized;
-
                 // Move towards the player
                 float distance = Vector2.Distance(transform.position, player.transform.position);
                 //Debug.Log(distance);
@@ -93,6 +92,20 @@ public class BasicEnemyAI : MonoBehaviour
             {
                 // If the player is not detected, stop moving
                 this.player = null; // Reset player reference
+            }
+            // Check for fellow enemies
+            Collider2D fellowEnemy = CheckForFellowEnemies();
+            if (fellowEnemy != null)
+            {
+                float distanceToDetectedFellowEnemies = Vector2.Distance(transform.position, fellowEnemy.transform.position);
+                if (distanceToDetectedFellowEnemies < distanceToFellowEnemy)
+                {
+                    // If too close to a fellow enemy, move away
+                    Vector2 direction = (transform.position - fellowEnemy.transform.position).normalized;
+                    enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
+                }
+
+
             }
             yield return new WaitForSeconds(enemyThinkInterval);
         }
@@ -116,6 +129,19 @@ public class BasicEnemyAI : MonoBehaviour
                 //     // Example: Move towards the player
                 //     return hitCollider;
                 // }
+                return hitCollider; // Return the player collider if detected
+            }
+        }
+        return null;
+    }
+
+    Collider2D CheckForFellowEnemies()
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Enemy"))
+            {
                 return hitCollider; // Return the player collider if detected
             }
         }
