@@ -1,5 +1,6 @@
-using System;
 using System.Collections;
+using System;
+
 using UnityEngine;
 
 
@@ -22,7 +23,7 @@ public class GameSystem : MonoBehaviour
     public EnemyType[] enemyTypes; // Array of enemy types to spawn
     public int maxEnemyCount = 10; //private int currentEnemyCount = 0;
     public float spawnInterval = 2f;
-    public float waveInterval = 5f; // Variance in spawn interval to add randomness
+    public Vector2 spawnIntervalRange = new Vector2(1f, 5f);
 
     public float spawnRadius = 5f; // Radius around the level center to spawn enemies
 
@@ -71,7 +72,7 @@ public class GameSystem : MonoBehaviour
         _currentWaveLevel++;
 
         // Spawn enemies based on the current wave level
-        for (int i = 0; i < maxEnemyCount; i++)
+        for (int i = 0; i < (maxEnemyCount*currentWaveLevel); i++)
         {
             // Choose a random enemy type based on spawn chance and wave level
             EnemyType enemyType = chooseEnemyType();
@@ -82,7 +83,7 @@ public class GameSystem : MonoBehaviour
             }
 
             // Wait for the spawn interval before spawning the next set of enemies
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(spawnIntervalRange.x, spawnIntervalRange.y));
         }
         barrier.SetActive(false);
         waveActive = false;

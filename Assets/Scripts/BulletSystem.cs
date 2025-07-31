@@ -8,6 +8,8 @@ public class BulletSystem : MonoBehaviour
 
     public string whoToDamage = "Enemy"; // Tag of the object to damage
 
+    public bool homing = false; // Whether the bullet is homing towards a target
+
     void Start()
     {
 
@@ -16,7 +18,42 @@ public class BulletSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (homing)
+        {
+            // Find the nearest target to home in on
+            GameObject target = FindNearestTarget();
+            if (target != null)
+            {
+                Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    float distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+                    Vector2 direction = (target.transform.position - transform.position).normalized;
+                    //rb.linearVelocity = Vector2.zero; // Reset velocity to avoid accumulating forces
+                    rb.AddForce(direction * (distanceToTarget / 10), ForceMode2D.Impulse); // Adjust the force multiplier as needed
 
+                }
+            }
+        }
+    }
+
+    GameObject FindNearestTarget()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag(whoToDamage);
+        GameObject nearestTarget = null;
+        float nearestDistance = Mathf.Infinity;
+
+        foreach (GameObject target in targets)
+        {
+            float distance = Vector2.Distance(transform.position, target.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestTarget = target;
+            }
+        }
+
+        return nearestTarget;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
