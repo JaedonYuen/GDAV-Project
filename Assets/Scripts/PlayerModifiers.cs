@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerModifiers : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlayerModifiers : MonoBehaviour
     public float currentEnemySpeedModifier = 1f;
     public float currentEnemyDamageModifier = 1f;
     public float currentEnemyHealthModifier = 1f;
+
     void Start()
     {
         

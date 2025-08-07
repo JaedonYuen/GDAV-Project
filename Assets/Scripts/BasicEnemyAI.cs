@@ -77,14 +77,14 @@ public class BasicEnemyAI : MonoBehaviour
                 //Debug.Log(distance);
                 if (distance > distanceToPlayer)
                 {
-                    enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
+                    enemyRigidbody.linearVelocity = direction * speed;
                     this.player = player.gameObject;
                 }
                 else
                 {
                     //kick back to break
 
-                    enemyRigidbody.AddForce(-direction * speed, ForceMode2D.Impulse);
+                    enemyRigidbody.linearVelocity = -direction * speed;
                     this.player = player.gameObject;
                 }
             }

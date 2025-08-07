@@ -192,12 +192,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf8ebdd9fd82e6a49b45d7bc6802759a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 20
   detectionRange: 100
   enemyThinkInterval: 0.1
   enemyFireInterval: 1
   enemyFireRate: 2
   distanceToPlayer: 20
+  distanceToFellowEnemy: 0.5
   enemyRigidbody: {fileID: 0}
   enemyWeaponSystem: {fileID: 5855432562316786908}
   enemyArm: {fileID: 2094478670961362839}

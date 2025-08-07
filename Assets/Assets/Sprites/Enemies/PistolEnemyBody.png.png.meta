@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 60f8a92b7ea31b54d981a9405b42de46
+guid: 1068cff35e422b942ab09be9fcd381c8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1275589539659018210
-    second: shotgun_0
+      213: 2532742238576741732
+    second: PistolEnemyBody.png_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shotgun_0
+      name: PistolEnemyBody.png_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 2
-        width: 43
-        height: 26
+        x: 19
+        y: 5
+        width: 26
+        height: 54
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2ef649e8dedc3b110800000000000000
-      internalID: 1275589539659018210
+      spriteID: 46d8efd95ab162320800000000000000
+      internalID: 2532742238576741732
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      shotgun_0: 1275589539659018210
+      PistolEnemyBody.png_0: 2532742238576741732
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

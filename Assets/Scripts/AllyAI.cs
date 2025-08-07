@@ -69,19 +69,37 @@ public class AllyAI : MonoBehaviour
                 // Move towards the player
 
                 float distance = Vector2.Distance(transform.position, player.transform.position);
-
+                Vector2 direction = Vector2.right; // Default direction
                 if (distance > distanceToPlayer)
                 {
-                    Vector2 direction = (player.transform.position - transform.position).normalized;
+                    direction = (player.transform.position - transform.position).normalized;
                     enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
                     this.player = player.gameObject;
                 }
                 else
                 {
                     //kick back to break
-                    Vector2 direction = (transform.position - player.transform.position).normalized;
+                    direction = (transform.position - player.transform.position).normalized;
                     enemyRigidbody.AddForce(direction * speed, ForceMode2D.Impulse);
                     this.player = player.gameObject;
+                }
+
+                //flip the enemy sprite based on movement direction
+                if (direction.x > 0)
+                {
+                    SpriteRenderer enemySprite = GetComponent<SpriteRenderer>();
+                    if (enemySprite != null)
+                    {
+                        enemySprite.flipX = false; // Face right
+                    }
+                }
+                else if (direction.x < 0)
+                {
+                    SpriteRenderer enemySprite = GetComponent<SpriteRenderer>();
+                    if (enemySprite != null)
+                    {
+                        enemySprite.flipX = true; // Face left
+                    }
                 }
             }
             else

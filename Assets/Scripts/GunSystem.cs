@@ -111,13 +111,14 @@ public class GunSystem : MonoBehaviour
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = bulletRotation * Vector2.right * bulletSpeed;
             float modifiedDamage = damage;
+            float totalDamageModifier = 1f;
             if (belongsToPlayer)
             {
-                modifiedDamage *= GetComponent<PlayerModifiers>()?.currentDamageModifier ?? 1f;
+                totalDamageModifier  = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("damage") ?? 1f;
             }
             else
             {
-                modifiedDamage *= GetComponent<PlayerModifiers>()?.currentEnemyDamageModifier ?? 1f;
+                totalDamageModifier = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("enemyDamage") ?? 1f;
             }
 
             bullet.GetComponent<BulletSystem>().damage = modifiedDamage;

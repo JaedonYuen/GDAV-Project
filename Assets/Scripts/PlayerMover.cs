@@ -11,7 +11,8 @@ public class PlayerMover : MonoBehaviour
     public float speed = 5f;
     public Transform arm;
     public SpriteRenderer armSprite;
-    public PlayerModifiers playerModifiers; // Reference to PlayerModifiers script
+    //public PlayerModifiers playerModifiers; // Reference to PlayerModifiers script
+    public Modifiers playerModifiers;
     private Vector2 movementInput;
 
     private SpriteRenderer spriteRenderer;
@@ -40,7 +41,8 @@ public class PlayerMover : MonoBehaviour
     void FixedUpdate()
     {
         // Apply any modifier
-        modifiedSpeed = speed * (playerModifiers?.currentSpeedModifier ?? 1f);
+        float speedMod = playerModifiers.GetModValuesForAllTypesEquiped("speed");
+        modifiedSpeed = speed * speedMod;
 
         // Move the player based on the input received
         Move(movementInput);
@@ -67,7 +69,7 @@ public class PlayerMover : MonoBehaviour
     {
         movementInput = inputValue.Get<Vector2>();
     }
-    public void OnJump()
+    public void OnEnter()
     {
         //temp thing to trigger waves
         GameSystem gameSystem = FindFirstObjectByType<GameSystem>();
@@ -80,6 +82,7 @@ public class PlayerMover : MonoBehaviour
     
     public void Move(Vector2 direction)
     {
+        //Debug.Log($"Moving player with direction: {direction} and speed: {modifiedSpeed}");
         if (playerRigidbody != null)
         {
             playerRigidbody.linearVelocity = direction * modifiedSpeed;
