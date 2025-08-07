@@ -57,7 +57,7 @@ MonoBehaviour:
   maxAmmo: 6
   reloadTime: 0.6
   damage: 25
-  belongsToPlayer: 0
+  belongsToPlayer: 1
   _currentAmmo: 0
 --- !u!61 &2570704466217643120
 BoxCollider2D:

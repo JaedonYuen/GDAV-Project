@@ -42,7 +42,7 @@ public class PlayerMover : MonoBehaviour
     {
         // Apply any modifier
         float speedMod = playerModifiers.GetModValuesForAllTypesEquiped("speed");
-        modifiedSpeed = speed * speedMod;
+        modifiedSpeed = speed * speedMod; // Apply the speed modifier
 
         // Move the player based on the input received
         Move(movementInput);
@@ -79,6 +79,8 @@ public class PlayerMover : MonoBehaviour
         }
 
     }
+
+    
     
     public void Move(Vector2 direction)
     {

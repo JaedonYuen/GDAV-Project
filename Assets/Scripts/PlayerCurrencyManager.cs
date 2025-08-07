@@ -41,7 +41,7 @@ public class PlayerCurrencyManager : MonoBehaviour
 
     void Start()
     {
-        credits = 100; // Initialize credits
+        credits = 1000000; // Initialize credits
     }
 
     // Update is called once per frame

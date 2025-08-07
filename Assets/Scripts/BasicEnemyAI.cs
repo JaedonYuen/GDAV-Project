@@ -75,16 +75,17 @@ public class BasicEnemyAI : MonoBehaviour
                 // Move towards the player
                 float distance = Vector2.Distance(transform.position, player.transform.position);
                 //Debug.Log(distance);
+                float speedMod = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("enemySpeed") ?? 1f;
                 if (distance > distanceToPlayer)
                 {
-                    enemyRigidbody.linearVelocity = direction * speed;
+                    enemyRigidbody.linearVelocity = direction * speed * speedMod;
                     this.player = player.gameObject;
                 }
                 else
                 {
                     //kick back to break
 
-                    enemyRigidbody.linearVelocity = -direction * speed;
+                    enemyRigidbody.linearVelocity = -direction * speed * speedMod;
                     this.player = player.gameObject;
                 }
             }

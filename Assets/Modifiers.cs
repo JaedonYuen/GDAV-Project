@@ -10,15 +10,14 @@ public class Modifier
     public string description;
     public Sprite icon;
     public int cost;
-    public List<string> modTypes; // Types of modifiers this can apply to, e.g., "speed", "damage", "health"
-    public float speedModifier = 1f;
-    public float damageModifier = 1f;
-    public float healthModifier = 1f;
+    public List<ModValue> modTypes = new List<ModValue>(); // List of modifier types and their values
+}
 
-    public float enemySpeedModifier = 1f;
-    public float enemyDamageModifier = 1f;
-    public float enemyHealthModifier = 1f;
-
+[Serializable]
+public class ModValue
+{
+    public string modType; // Type of modifier, e.g., "speed", "damage", "health"
+    public float value; // Value of the modifier, e.g., 1.2 for 20% increase
 }
 
 
@@ -42,39 +41,20 @@ public class Modifiers : MonoBehaviour
     public float GetModValuesForAllTypesEquiped(string modtype)
     {
         float totalValue = 1f;
-
-        foreach (var modifier in playerModifiers)
-        {
-            if (modifier.modTypes.Contains(modtype))
+        foreach (Modifier modifier in playerModifiers)
             {
-                switch (modtype)
+                foreach (ModValue modValue in modifier.modTypes)
                 {
-                    case "speed":
-                        totalValue *= modifier.speedModifier;
-                        break;
-                    case "damage":
-                        totalValue *= modifier.damageModifier;
-                        break;
-                    case "health":
-                        totalValue *= modifier.healthModifier;
-                        break;
-                    case "enemySpeed":
-                        totalValue *= modifier.enemySpeedModifier;
-                        break;
-                    case "enemyDamage":
-                        totalValue *= modifier.enemyDamageModifier;
-                        break;
-                    case "enemyHealth":
-                        totalValue *= modifier.enemyHealthModifier;
-                        break;
-                    default:
-                        Debug.LogWarning($"Unknown mod type: {modtype}");
-                        break;
+                    if (modValue.modType == modtype)
+                    {
+                        totalValue += modValue.value; // Multiply the values for the same mod type
+                        Debug.Log($"Modifier: {modifier.name}, Type: {modValue.modType}, Value: {modValue.value}");
+                    }
                 }
             }
-        }
 
         return totalValue;
+                
     }
 
     public void EquipModifier(string modifierName)
@@ -116,7 +96,7 @@ public class Modifiers : MonoBehaviour
             Debug.LogWarning($"Modifier {modifierName} not found in equipped modifiers.");
         }
     }
-    
+
     public int CheckAvailableModifierSlots()
     {
         return maxModifiers - playerModifiers.Count;

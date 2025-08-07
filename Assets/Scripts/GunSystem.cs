@@ -13,6 +13,7 @@ public class GunSystem : MonoBehaviour
     public bool isAutomatic = false; // If true, gun will fire continuously while the trigger is held
     public float spreadAngle = 0f; 
     public int maxAmmo = 30; 
+    private int _maxAmmo = 30; // This is the base max ammo, can be modified by modifiers
     public float reloadTime = 1f; 
     public float damage = 10f;
 
@@ -33,21 +34,31 @@ public class GunSystem : MonoBehaviour
     private Coroutine autoFireCoroutine = null; 
     void Start()
     {
-        _currentAmmo = maxAmmo;
+        _maxAmmo = maxAmmo;
+        _currentAmmo = _maxAmmo;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Modifiers modifiers = FindAnyObjectByType<Modifiers>();
+        Debug.Log(modifiers);
+        if (modifiers != null)
+        {
+            float mod = modifiers.GetModValuesForAllTypesEquiped("ammo");
+            //Debug.Log(mod);
+            _maxAmmo = (int)(mod * maxAmmo); // Apply ammo modifier
+        }
     }
 
     IEnumerator reloadCoroutine()
     {
         isReloading = true;
+        
         //Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadTime);
-        _currentAmmo = maxAmmo;
+        _currentAmmo = _maxAmmo;
         isReloading = false;
         //Debug.Log("Reload complete! Current ammo: " + _currentAmmo);
     }
