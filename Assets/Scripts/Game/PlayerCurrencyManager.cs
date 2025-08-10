@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerCurrencyManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    public int initialCredits = 100; // Initial credits for the player
     private int _credits;
     public int credits
     {
@@ -41,7 +41,7 @@ public class PlayerCurrencyManager : MonoBehaviour
 
     void Start()
     {
-        credits = 1000000; // Initialize credits
+        credits = initialCredits; // Initialize credits
     }
 
     // Update is called once per frame

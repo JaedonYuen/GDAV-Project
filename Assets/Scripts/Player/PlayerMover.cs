@@ -1,5 +1,6 @@
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,9 @@ public class PlayerMover : MonoBehaviour
     //top down movement, uses the new Unity Input System
     public Rigidbody2D playerRigidbody;
     public float speed = 5f;
+    public float dashSpeed = 10f;
+    public float dashDuration = 0.2f; // Duration of the dash in seconds
+    public float dashCooldown = 1f;
     public Transform arm;
     public SpriteRenderer armSprite;
     //public PlayerModifiers playerModifiers; // Reference to PlayerModifiers script
@@ -18,6 +22,9 @@ public class PlayerMover : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private float modifiedSpeed;
+
+    private bool isDashing = false;
+    private bool canDash = true; // Flag to check if the player can dash
 
     void Start()
     {
@@ -45,7 +52,11 @@ public class PlayerMover : MonoBehaviour
         modifiedSpeed = speed * speedMod; // Apply the speed modifier
 
         // Move the player based on the input received
-        Move(movementInput);
+        //only move if not dashing
+        if (!isDashing && playerRigidbody != null)
+        {
+           Move(movementInput);
+        }
         // Flip the player sprite based on movement direction
         if (movementInput.x > 0)
         {
@@ -61,6 +72,31 @@ public class PlayerMover : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         arm.transform.right = mousePosition - (Vector2)arm.transform.position;
 
+    }
+
+    IEnumerator Dash()
+    {
+        if (playerRigidbody != null && canDash && !isDashing)
+        {
+            isDashing = true;
+            canDash = false; // Prevent further dashes until cooldown is over
+            if (movementInput.x != 0 && movementInput.y == 0) //if we were strafing, we would want to dash in that same direction
+            {
+                playerRigidbody.linearVelocity = Vector2.zero; // break 
+                playerRigidbody.AddForce(movementInput * dashSpeed, ForceMode2D.Impulse);
+
+
+            }
+            else if (movementInput.y != 0) //if we were moving up or down, we want to dash in the opposite direction
+            {
+                playerRigidbody.linearVelocity = Vector2.zero; // break
+                playerRigidbody.AddForce(new Vector2(-movementInput.x, movementInput.y) * dashSpeed, ForceMode2D.Impulse);
+            }
+            yield return new WaitForSeconds(dashDuration);
+            isDashing = false;
+            yield return new WaitForSeconds(dashCooldown); // Wait for the cooldown period
+            canDash = true; // Allow dashing again after cooldown
+        }
     }
 
     // This method is called by Unity's Input System when using "Send Messages"
@@ -80,7 +116,11 @@ public class PlayerMover : MonoBehaviour
 
     }
 
-    
+    public void OnJump() //using the default jump key lel
+    {
+        //Debug.Log("Jump action triggered");
+        StartCoroutine(Dash());
+    }
     
     public void Move(Vector2 direction)
     {

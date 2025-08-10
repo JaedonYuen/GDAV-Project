@@ -11,6 +11,7 @@ public class Modifier
     public Sprite icon;
     public int cost;
     public List<ModValue> modTypes = new List<ModValue>(); // List of modifier types and their values
+    public int onlyAppearsInWaveAndAbove = 0; // This modifier only appears in waves above this number, 0 means it can appear in any wave
 }
 
 [Serializable]

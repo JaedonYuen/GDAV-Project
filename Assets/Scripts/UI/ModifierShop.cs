@@ -6,6 +6,7 @@ public class ModifierShop : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Modifiers modifiers; // Reference to the Modifiers script
+    public GameSystem gameSystem; // Reference to the GameSystem script
     public GameObject modifierButtonPrefab; // Prefab for the modifier button
     public Transform modifierButtonContainer; // Container to hold the modifier buttons
     public Transform equippedModifiersContainer; // Container to display equipped modifiers
@@ -39,12 +40,15 @@ public class ModifierShop : MonoBehaviour
         {
             if (modifiers.modifiers.Count == 0) break; // Exit if no modifiers left
 
-            // Randomly select a modifier
-            int randomIndex = Random.Range(0, modifiers.modifiers.Count);
-            Modifier selectedModifier = modifiers.modifiers[randomIndex];
-
+            // Select a random modifier, make sure that modifier only appears in waves above the current wave
+            Modifier selectedModifier = modifiers.modifiers[Random.Range(0, modifiers.modifiers.Count)];
+            while (selectedModifier.onlyAppearsInWaveAndAbove > gameSystem.currentWaveLevel)
+            {
+                selectedModifier = modifiers.modifiers[Random.Range(0, modifiers.modifiers.Count)];
+            }
+            
             // Create a button for the modifier
-            GameObject button = Instantiate(modifierButtonPrefab, modifierButtonContainer);
+                GameObject button = Instantiate(modifierButtonPrefab, modifierButtonContainer);
             button.GetComponentInChildren<TextMeshProUGUI>().text = $"{selectedModifier.name} - {selectedModifier.cost} C";
             button.GetComponent<Button>().onClick.AddListener(() => OnShopModifierButtonClicked(selectedModifier, button));
 
