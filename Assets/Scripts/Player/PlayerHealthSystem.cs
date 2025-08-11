@@ -5,6 +5,7 @@ public class PlayerHealthSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public float maxHealth = 100f; // Maximum health of the player
     public float currentHealth;
+    public GameObject gameOverScreen; // Reference to the game over screen UI
     private float _currentHealth
     {
         get { return currentHealth; }
@@ -59,8 +60,9 @@ public class PlayerHealthSystem : MonoBehaviour
     void Die()
     {
         Debug.Log("Player has died.");
-        Application.Quit(); // Exit the game or handle player death appropriately
-        // Handle player death (e.g., respawn, game over)
-        // This could involve disabling the player, playing a death animation, etc.
+        gameOverScreen.SetActive(true);
+        StopAllCoroutines(); // Stop health regeneration when the player dies
+                             // pause
+        //Time.timeScale = 0f; // Pause the game
     }
 }
