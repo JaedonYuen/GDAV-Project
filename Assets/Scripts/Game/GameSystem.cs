@@ -72,7 +72,7 @@ public class GameSystem : MonoBehaviour
         _currentWaveLevel++;
 
         // Spawn enemies based on the current wave level
-        for (int i = 0; i < (maxEnemyCount*currentWaveLevel); i++)
+        for (int i = 0; i < (maxEnemyCount+((maxEnemyCount/2)*_currentWaveLevel)); i++)
         {
             // Choose a random enemy type based on spawn chance and wave level
             EnemyType enemyType = chooseEnemyType();

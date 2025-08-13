@@ -16,6 +16,8 @@ public class GunSystem : MonoBehaviour
     private int _maxAmmo = 30; // This is the base max ammo, can be modified by modifiers
     public float reloadTime = 1f; 
     public float damage = 10f;
+    public AudioClip fireSound; // Sound to play when firing
+    public AudioClip reloadSound; // Sound to play when reloading
 
     public bool belongsToPlayer = false; 
     
@@ -114,6 +116,14 @@ public class GunSystem : MonoBehaviour
     IEnumerator fireBullet()
     {
         isFiring = true;
+        if (fireSound != null)
+        {
+            //vary the sound volume and pitch slightly for each shot
+            AudioSource.PlayClipAtPoint(fireSound, barrel.position, Random.Range(0.8f, 1.2f));
+
+
+
+        }
         for (int i = 0; i < bulletsPerShot; i++)
         {
             float angle = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);
@@ -125,7 +135,7 @@ public class GunSystem : MonoBehaviour
             float totalDamageModifier = 1f;
             if (belongsToPlayer)
             {
-                totalDamageModifier  = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("damage") ?? 1f;
+                totalDamageModifier = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("damage") ?? 1f;
             }
             else
             {

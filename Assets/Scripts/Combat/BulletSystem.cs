@@ -10,6 +10,9 @@ public class BulletSystem : MonoBehaviour
 
     public bool homing = false; // Whether the bullet is homing towards a target
 
+    public int bulletHealth = 1; // how many hits the bullet can take before being destroyed
+
+    private Vector2 linearVelocity = Vector2.zero; 
     void Start()
     {
 
@@ -18,23 +21,25 @@ public class BulletSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (homing)
-        {
-            // Find the nearest target to home in on
-            GameObject target = FindNearestTarget();
-            if (target != null)
-            {
-                Rigidbody2D rb = GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    float distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-                    Vector2 direction = (target.transform.position - transform.position).normalized;
-                    //rb.linearVelocity = Vector2.zero; // Reset velocity to avoid accumulating forces
-                    rb.AddForce(direction * (distanceToTarget / 10), ForceMode2D.Impulse); // Adjust the force multiplier as needed
+        linearVelocity = GetComponent<Rigidbody2D>().linearVelocity;
 
+        if (homing)
+            {
+                // Find the nearest target to home in on
+                GameObject target = FindNearestTarget();
+                if (target != null)
+                {
+                    Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                    if (rb != null)
+                    {
+                        float distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+                        Vector2 direction = (target.transform.position - transform.position).normalized;
+                        //rb.linearVelocity = Vector2.zero; // Reset velocity to avoid accumulating forces
+                        rb.AddForce(direction * (distanceToTarget / 10), ForceMode2D.Impulse); // Adjust the force multiplier as needed
+
+                    }
                 }
             }
-        }
     }
 
     GameObject FindNearestTarget()
@@ -59,6 +64,7 @@ public class BulletSystem : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //should check if the bullet hits an enemy
+        // check if it hit an object in the wall
         if (collision.gameObject.CompareTag(whoToDamage))
         {
             // Apply damage to the enemy
@@ -83,9 +89,28 @@ public class BulletSystem : MonoBehaviour
             {
                 Debug.LogWarning("Couldnt find health component on " + collision.gameObject.name);
             }
+            // Decrease bullet health
+            bulletHealth--;
+            if (bulletHealth <= 0)
+            {
+                Destroy(gameObject); // Destroy the bullet if it has no health left
+            }
+            else
+            {
+                Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.AddForce(linearVelocity, ForceMode2D.Impulse); // Apply the current velocity to the bullet
+                }
+            }
+            GameObject hitEffect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(hitEffect, 2f); // Destroy the hit effect after 2 seconds
         }
-        Destroy(gameObject); // Destroy the bullet on collision
-        GameObject hitEffect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-        Destroy(hitEffect, 2f); // Destroy the hit effect after 2 seconds
+        else
+        { 
+            // If it hits something else, just destroy the bullet
+            Destroy(gameObject);
+        }
+        
     }
 }

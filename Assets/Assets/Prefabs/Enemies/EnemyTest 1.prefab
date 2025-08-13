@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  _currentHealth: 0
+  rewardOnDeath: 50
 --- !u!61 &7831936648649682651
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -176,7 +176,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -198,6 +198,7 @@ MonoBehaviour:
   enemyFireInterval: 0.5
   enemyFireRate: 1
   distanceToPlayer: 5
+  distanceToFellowEnemy: 0.5
   enemyRigidbody: {fileID: 0}
   enemyWeaponSystem: {fileID: 5855432562316786908}
   enemyArm: {fileID: 2094478670961362839}
@@ -764,10 +765,12 @@ MonoBehaviour:
   fireRate: 1
   bulletsPerShot: 5
   isAutomatic: 0
-  spreadAngle: 2
+  spreadAngle: 50
   maxAmmo: 6
   reloadTime: 1
   damage: 10
+  fireSound: {fileID: 0}
+  reloadSound: {fileID: 0}
   belongsToPlayer: 0
   _currentAmmo: 0
 --- !u!1 &5800556746511329511

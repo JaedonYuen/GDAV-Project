@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class CursorSystem : MonoBehaviour
 {
     public Camera mainCamera;
@@ -11,8 +12,11 @@ public class CursorSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = 10f; // Set this to the distance from the camera to the object
-        transform.position = mainCamera.ScreenToWorldPoint(mousePosition);
+        if (Mouse.current != null)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Vector3 worldPosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mainCamera.nearClipPlane));
+            transform.position = new Vector3(worldPosition.x, worldPosition.y, transform.position.z);
+        }
     }
 }

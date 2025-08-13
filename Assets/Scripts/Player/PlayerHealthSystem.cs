@@ -61,6 +61,11 @@ public class PlayerHealthSystem : MonoBehaviour
     {
         Debug.Log("Player has died.");
         gameOverScreen.SetActive(true);
+        Animator animator = gameOverScreen.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetTrigger("GameOver");
+        }
         StopAllCoroutines(); // Stop health regeneration when the player dies
                              // pause
         //Time.timeScale = 0f; // Pause the game
