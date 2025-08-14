@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 public class GunSystem : MonoBehaviour
@@ -45,7 +44,7 @@ public class GunSystem : MonoBehaviour
     void Update()
     {
         Modifiers modifiers = FindAnyObjectByType<Modifiers>();
-        Debug.Log(modifiers);
+        //Debug.Log(modifiers);
         if (modifiers != null)
         {
             float mod = modifiers.GetModValuesForAllTypesEquiped("ammo");

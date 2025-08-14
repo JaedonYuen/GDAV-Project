@@ -50,7 +50,7 @@ public class LaserSystem : MonoBehaviour
         if (hit.collider != null)
         {
             endPosition = hit.point; // Set end position to the hit point
-            Debug.Log($"Laser hit: {hit.collider.name} at distance: {hit.distance}");
+            //Debug.Log($"Laser hit: {hit.collider.name} at distance: {hit.distance}");
         }
         else
         {

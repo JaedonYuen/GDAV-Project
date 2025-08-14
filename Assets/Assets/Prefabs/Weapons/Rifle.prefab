@@ -144,6 +144,8 @@ MonoBehaviour:
   maxAmmo: 50
   reloadTime: 1
   damage: 30
+  fireSound: {fileID: 8300000, guid: 1872671e267a6f04794e2c30589993e8, type: 3}
+  reloadSound: {fileID: 0}
   belongsToPlayer: 1
   _currentAmmo: 0
 --- !u!61 &6755484824701970101

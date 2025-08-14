@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+
 public class ModifierShop : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -11,6 +13,7 @@ public class ModifierShop : MonoBehaviour
     public Transform modifierButtonContainer; // Container to hold the modifier buttons
     public Transform equippedModifiersContainer; // Container to display equipped modifiers
     public PlayerCurrencyManager playerCurrencyManager; // Reference to the PlayerCurrencyManager script
+    public TextMeshProUGUI descriptionText; // Text to display the player's currency
     void Start()
     {
         PopulateModifierShop();
@@ -51,6 +54,13 @@ public class ModifierShop : MonoBehaviour
                 GameObject button = Instantiate(modifierButtonPrefab, modifierButtonContainer);
             button.GetComponentInChildren<TextMeshProUGUI>().text = $"{selectedModifier.name} - {selectedModifier.cost} C";
             button.GetComponent<Button>().onClick.AddListener(() => OnShopModifierButtonClicked(selectedModifier, button));
+            // Add hover effect
+            button.GetComponent<EventTrigger>().triggers.Add(new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.PointerEnter,
+                callback = new EventTrigger.TriggerEvent()
+            });
+            button.GetComponent<EventTrigger>().triggers[0].callback.AddListener((eventData) => { OnShopModifierButtonHover(selectedModifier, button); });
 
             GameObject icon = button.transform.Find("Icon").gameObject;
             if (icon != null)
@@ -64,6 +74,19 @@ public class ModifierShop : MonoBehaviour
 
             
            
+        }
+    }
+
+    void OnShopModifierButtonHover(Modifier modifier, GameObject button)
+    {
+        // Display the modifier's description
+        if (descriptionText != null)
+        {
+            descriptionText.text = $"<b>{modifier.name}</b>: {modifier.description}";
+        }
+        else
+        {
+            Debug.LogWarning("Description Text is not assigned in the inspector.");
         }
     }
 

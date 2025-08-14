@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -55,7 +54,7 @@ public class PlayerMover : MonoBehaviour
         //only move if not dashing
         if (!isDashing && playerRigidbody != null)
         {
-           Move(movementInput);
+            Move(movementInput);
         }
         // Flip the player sprite based on movement direction
         if (movementInput.x > 0)
@@ -121,7 +120,7 @@ public class PlayerMover : MonoBehaviour
         //Debug.Log("Jump action triggered");
         StartCoroutine(Dash());
     }
-    
+
     public void Move(Vector2 direction)
     {
         //Debug.Log($"Moving player with direction: {direction} and speed: {modifiedSpeed}");
@@ -136,7 +135,9 @@ public class PlayerMover : MonoBehaviour
     }
 
     
-    
+
+
+
 }
 
 
