@@ -14,6 +14,7 @@ public class CursorSystem : MonoBehaviour
     {
         if (Mouse.current != null)
         {
+            // Follow the player's cursor.
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             Vector3 worldPosition = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mainCamera.nearClipPlane));
             transform.position = new Vector3(worldPosition.x, worldPosition.y, transform.position.z);

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class EnemyHealthBar : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // manages the red bar above the enemy
     public Slider healthBar; // Reference to the UI Slider component
     public GameObject enemy; // Reference to the enemy GameObject
     private EnemyHealthSystem enemyHealthSystem; // Reference to the enemy's health system

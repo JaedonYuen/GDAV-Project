@@ -5,6 +5,10 @@ public class CameraMan : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    // Camera man!!
+    // Custom implimentation of a camera that follows the player, comes with a special feature that allows the player to move the camera with the mouse to better aim at enemies.
+    
+
     public Transform player;
     public Vector3 offset;
     public Vector3 _offset;

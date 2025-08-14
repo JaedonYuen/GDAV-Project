@@ -17,7 +17,7 @@ public class EnemyType
 public class GameSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //i love the video game
+    // I love the video game
 
 
     public EnemyType[] enemyTypes; // Array of enemy types to spawn
@@ -49,6 +49,7 @@ public class GameSystem : MonoBehaviour
         
     }
 
+    
     private Vector3 GetRandomSpawnPosition()
     {
         // Generate a random position within a defined area

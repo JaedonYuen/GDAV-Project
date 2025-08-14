@@ -20,6 +20,10 @@ public class BasicEnemyAI : MonoBehaviour
 
     private GameObject player; // Reference to the player GameObject
 
+    // AI explaination:
+    // AI will first check for the player within a certain range.
+    // If the player is detected, the AI will move towards the player and attempt to attack.
+    // If the player is not detected, the AI will stand still << needs to be changed soon because huh???
 
     void Start()
     {

@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyHealthSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Health manager for the enemy, when it dies, it rewards the player with credits :D
     public float maxHealth = 100f;
     public int rewardOnDeath = 50; // Reward given to the player when the enemy dies
 
