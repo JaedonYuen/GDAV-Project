@@ -14,6 +14,8 @@ public class ModifierShop : MonoBehaviour
     public Transform equippedModifiersContainer; // Container to display equipped modifiers
     public PlayerCurrencyManager playerCurrencyManager; // Reference to the PlayerCurrencyManager script
     public TextMeshProUGUI descriptionText; // Text to display the player's currency
+    public Color availableColor = new Color(1,1,0); // Color for available modifiers
+    public Color unavailableColor = new Color(1,0,0); // Color for unavailable (cant afford) modifiers
     void Start()
     {
         PopulateModifierShop();
@@ -23,7 +25,7 @@ public class ModifierShop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void PopulateModifierShop()
@@ -82,7 +84,14 @@ public class ModifierShop : MonoBehaviour
         // Display the modifier's description
         if (descriptionText != null)
         {
-            descriptionText.text = $"<b>{modifier.name}</b>: {modifier.description}";
+            if (playerCurrencyManager != null && playerCurrencyManager.CanAfford(modifier.cost))
+            {
+                descriptionText.text = $"<color=#{ColorUtility.ToHtmlStringRGBA(availableColor)}><b>{modifier.name}</b></color>: {modifier.description}";
+            }
+            else
+            {
+                descriptionText.text = $"<color=#{ColorUtility.ToHtmlStringRGBA(unavailableColor)}><b>{modifier.name}</b></color>: {modifier.description}";
+            }
         }
         else
         {
@@ -160,10 +169,14 @@ public class ModifierShop : MonoBehaviour
             Debug.LogWarning("PlayerCurrencyManager is not assigned.");
         }
     }
-    
+
     public void RefreshShop()
     {
-        PopulateModifierShop();
-        DisplayEquippedModifiers();
+        if (playerCurrencyManager.CanAfford(10))
+        {
+            PopulateModifierShop();
+            DisplayEquippedModifiers();
+        }
     }
+    
 }

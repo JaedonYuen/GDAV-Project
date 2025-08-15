@@ -76,13 +76,8 @@ public class BulletSystem : MonoBehaviour
             }
             else if (playerHealth != null)
             {
-                PlayerModifiers playerModifiers = FindFirstObjectByType<PlayerModifiers>();
-                float finalDamage = 0f;
-                if (playerModifiers != null)
-                {
-                    // Apply damage reduction if playerModifiers is available
-                    finalDamage = damage * playerModifiers.currentDamageModifier;
-                }
+                Modifiers playerModifiers = FindFirstObjectByType<Modifiers>();
+                float finalDamage = playerModifiers != null ? damage * playerModifiers.GetModValuesForAllTypesEquiped("damage") : damage;
                 playerHealth.TakeDamage(finalDamage);
             }
             else
@@ -93,6 +88,7 @@ public class BulletSystem : MonoBehaviour
             bulletHealth--;
             if (bulletHealth <= 0)
             {
+                
                 Destroy(gameObject); // Destroy the bullet if it has no health left
             }
             else
@@ -107,10 +103,13 @@ public class BulletSystem : MonoBehaviour
             Destroy(hitEffect, 2f); // Destroy the hit effect after 2 seconds
         }
         else
-        { 
+        {
             // If it hits something else, just destroy the bullet
+            GameObject hitEffect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(hitEffect, 2f); // Destroy the hit effect after 2 seconds
             Destroy(gameObject);
         }
-        
     }
 }
+
+

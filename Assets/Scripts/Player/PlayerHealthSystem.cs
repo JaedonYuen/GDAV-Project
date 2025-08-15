@@ -34,9 +34,16 @@ public class PlayerHealthSystem : MonoBehaviour
 
     IEnumerator RegenerateHealth()
     {
-        while (_currentHealth < maxHealth)
+        while (true)
         {
-            Heal(healthRegenStep);
+            Modifiers playerModifiers = FindFirstObjectByType<Modifiers>();
+            float healthRegenModifier = playerModifiers != null ? playerModifiers.GetModValuesForAllTypesEquiped("healthRegen") : 1f;
+            
+            if (_currentHealth < maxHealth)
+            {
+                Heal(healthRegenStep * healthRegenModifier);
+            }
+            
             yield return new WaitForSeconds(healthRegenRate);
         }
     }
@@ -44,7 +51,7 @@ public class PlayerHealthSystem : MonoBehaviour
     public void TakeDamage(float damage)
     {
         _currentHealth -= damage;
-        Debug.Log("Player took damage: " + damage + ". Current health: " + _currentHealth);
+        //Debug.Log("Player took damage: " + damage + ". Current health: " + _currentHealth);
         if (_currentHealth <= 0)
         {
             Die();
@@ -54,7 +61,6 @@ public class PlayerHealthSystem : MonoBehaviour
     public void Heal(float amount)
     {
         _currentHealth += amount;
-        Debug.Log("Player healed: " + amount + ". Current health: " + _currentHealth);
     }
 
     void Die()

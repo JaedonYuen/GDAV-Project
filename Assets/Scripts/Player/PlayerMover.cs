@@ -79,18 +79,8 @@ public class PlayerMover : MonoBehaviour
         {
             isDashing = true;
             canDash = false; // Prevent further dashes until cooldown is over
-            if (movementInput.x != 0 && movementInput.y == 0) //if we were strafing, we would want to dash in that same direction
-            {
-                playerRigidbody.linearVelocity = Vector2.zero; // break 
-                playerRigidbody.AddForce(movementInput * dashSpeed, ForceMode2D.Impulse);
-
-
-            }
-            else if (movementInput.y != 0) //if we were moving up or down, we want to dash in the opposite direction
-            {
-                playerRigidbody.linearVelocity = Vector2.zero; // break
-                playerRigidbody.AddForce(new Vector2(-movementInput.x, movementInput.y) * dashSpeed, ForceMode2D.Impulse);
-            }
+            Vector2 dashDirection = movementInput.normalized; // Get the direction of the dash
+            playerRigidbody.AddForce(dashDirection * dashSpeed, ForceMode2D.Impulse);
             yield return new WaitForSeconds(dashDuration);
             isDashing = false;
             yield return new WaitForSeconds(dashCooldown); // Wait for the cooldown period
@@ -104,16 +94,7 @@ public class PlayerMover : MonoBehaviour
     {
         movementInput = inputValue.Get<Vector2>();
     }
-    public void OnEnter()
-    {
-        //temp thing to trigger waves
-        GameSystem gameSystem = FindFirstObjectByType<GameSystem>();
-        if (gameSystem != null)
-        {
-            gameSystem.StartWave();
-        }
-
-    }
+    
 
     public void OnJump() //using the default jump key lel
     {

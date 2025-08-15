@@ -35,8 +35,8 @@ public class HandSystem : MonoBehaviour
                 itemInhand.transform.SetParent(null);
                 itemInhand = null;
 
-                
-                
+
+
             }
             else
             {
@@ -56,8 +56,8 @@ public class HandSystem : MonoBehaviour
                         itemInhand.transform.localPosition = Vector3.zero;
                         itemInhand.transform.localRotation = Quaternion.identity; // Reset rotation to avoid unexpected rotations
 
-                        
-                        
+
+
 
                         return;
                     }
@@ -66,7 +66,7 @@ public class HandSystem : MonoBehaviour
         }
     }
 
-    
+
 
     public void OnAttack(InputValue inputValue)
     {
@@ -76,7 +76,7 @@ public class HandSystem : MonoBehaviour
             GunSystem gun = itemInhand.GetComponent<GunSystem>();
             if (gun != null)
             {
-               gun.Fire(inputValue.isPressed);
+                gun.Fire(inputValue.isPressed);
             }
         }
         // Implement firing logic here
@@ -94,5 +94,23 @@ public class HandSystem : MonoBehaviour
             }
         }
         // Implement reloading logic here
+    }
+    
+    public void OnEnter()
+    {
+        
+        GameSystem gameSystem = FindFirstObjectByType<GameSystem>();
+        if (gameSystem != null)
+        {
+            if (itemInhand != null) // Make sure that the player has a weapon
+            {
+                gameSystem.StartWave();
+            }
+            else
+            {
+                Debug.LogWarning("You cant just fight without a weapon!");
+            }
+        }
+
     }
 }

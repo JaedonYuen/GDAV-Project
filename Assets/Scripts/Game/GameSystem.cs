@@ -25,7 +25,8 @@ public class GameSystem : MonoBehaviour
     public float spawnInterval = 2f;
     public Vector2 spawnIntervalRange = new Vector2(1f, 5f);
 
-    public float spawnRadius = 5f; // Radius around the level center to spawn enemies
+    public Transform mapTopLeft;
+    public Transform mapBottomRight; // these transforms form a rectangle of the spawn area
 
     public Transform levelCenter;
 
@@ -34,14 +35,11 @@ public class GameSystem : MonoBehaviour
     private bool waveActive = false; // Flag to check if a wave is currently active
 
 
-    public int currentWaveLevel = 1; // Current wave level, can be used to scale difficulty
-    private int _currentWaveLevel
+    private int _currentWaveLevel = 0; // Current wave level, starts at 0
+
+    public int currentWaveLevel
     {
-        get { return currentWaveLevel; }
-        set
-        {
-            currentWaveLevel = Mathf.Max(1, value); // Ensure wave level is at least 1
-        }
+        get { return _currentWaveLevel; }
     }
 
     void Start()
@@ -52,10 +50,7 @@ public class GameSystem : MonoBehaviour
     
     private Vector3 GetRandomSpawnPosition()
     {
-        // Generate a random position within a defined area
-        float x = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
-        float y = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
-        return new Vector3(x, y, 0) + levelCenter.position; // Assuming y=0 for ground level
+        return new Vector3(UnityEngine.Random.Range(mapTopLeft.position.x, mapBottomRight.position.x), UnityEngine.Random.Range(mapTopLeft.position.y, mapBottomRight.position.y), 0);
     }
 
     private int countEnemies()

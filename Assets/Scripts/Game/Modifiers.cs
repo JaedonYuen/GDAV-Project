@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 
 [Serializable]
-public class Modifier
+public class Modifier // Class of the modifier module.
 {
-    public string name;
+    public string name; 
     public string description;
-    public Sprite icon;
-    public int cost;
+    public Sprite icon; // Icon representing the modifier
+    public int cost; // Cost
     public List<ModValue> modTypes = new List<ModValue>(); // List of modifier types and their values
     public int onlyAppearsInWaveAndAbove = 0; // This modifier only appears in waves above this number, 0 means it can appear in any wave
 }
 
 [Serializable]
-public class ModValue
+public class ModValue // A class that identifies itself as what type of value it should change, and what value to "add" to the total mod pool for that type.
 {
     public string modType; // Type of modifier, e.g., "speed", "damage", "health"
     public float value; // Value of the modifier, e.g., 1.2 for 20% increase
@@ -32,14 +32,7 @@ public class Modifiers : MonoBehaviour
 
     private int maxModifiers = 4; // Maximum number of modifiers that can be equipped
 
-
-    void Update()
-    {
-        //updat mod
-
-    }
-
-    public float GetModValuesForAllTypesEquiped(string modtype)
+    public float GetModValuesForAllTypesEquiped(string modtype) // Loop through every mod that the player equips and then loop though what it affects. If that effect is the same type, add it to the total.
     {
         float totalValue = 1f;
         foreach (Modifier modifier in playerModifiers)
@@ -54,22 +47,10 @@ public class Modifiers : MonoBehaviour
                 }
             }
 
-        return totalValue;
+        return MathF.Max(totalValue, 0.1f); // Ensure the value still has some value in it
                 
     }
 
-    public void EquipModifier(string modifierName)
-    {
-        Modifier modifier = playerModifiers.Find(m => m.name == modifierName);
-        if (modifier != null)
-        {
-            EquipModifier(modifier);
-        }
-        else
-        {
-            Debug.LogWarning($"Modifier {modifierName} not found.");
-        }
-    }
     public void EquipModifier(Modifier modifier)
     {
         //replace the first empty slot with the modifier
