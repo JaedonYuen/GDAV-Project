@@ -5,6 +5,7 @@ using TMPro;
 public class HealthHud : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Displays the health of the player
     public PlayerHealthSystem playerHealthSystem;
     public Slider healthSlider;
     public TextMeshProUGUI healthText;

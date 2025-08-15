@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerCurrencyManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Think of this script as the player's wallet. Since there is only one player, Its stored in the game manager.
     public int initialCredits = 100; // Initial credits for the player
     private int _credits;
     public int credits

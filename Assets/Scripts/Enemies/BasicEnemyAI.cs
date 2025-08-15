@@ -23,7 +23,10 @@ public class BasicEnemyAI : MonoBehaviour
     // AI explaination:
     // AI will first check for the player within a certain range.
     // If the player is detected, the AI will move towards the player and attempt to attack.
-    // If the player is not detected, the AI will stand still << needs to be changed soon because huh???
+    // Attacking is done by mimicking button presses and sending that to the gun system. I have reused the gun system because its more efficient than creating a new system for enemies.
+    // If an enemy feels like its too close to a fellow enemy, it will back off.
+    // If an enemy feels like its too close to the player, it will also back off, to avoid getting shot (well uhh only effective for sniper enemies since they always stay very far from the player.)
+    // If the player is not detected, the AI will stand still. This behavior is like this because i have made it so that the enemies always know where the player is via a large detection range for more engaging gameplay. 
 
     void Start()
     {
@@ -54,7 +57,7 @@ public class BasicEnemyAI : MonoBehaviour
         }
         
     }
-    IEnumerator enemyFireLoop()
+    IEnumerator enemyFireLoop() 
     {
         while (true)
         {
@@ -80,15 +83,15 @@ public class BasicEnemyAI : MonoBehaviour
                 float distance = Vector2.Distance(transform.position, player.transform.position);
                 //Debug.Log(distance);
                 float speedMod = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("enemySpeed") ?? 1f;
-                if (distance > distanceToPlayer)
+                if (distance > distanceToPlayer) // Check to see if its too near to a player
                 {
+                    // If not, procced.
                     enemyRigidbody.linearVelocity = direction * speed * speedMod;
                     this.player = player.gameObject;
                 }
                 else
                 {
-                    //kick back to break
-
+                    // Move back
                     enemyRigidbody.linearVelocity = -direction * speed * speedMod;
                     this.player = player.gameObject;
                 }
@@ -96,6 +99,7 @@ public class BasicEnemyAI : MonoBehaviour
             else
             {
                 // If the player is not detected, stop moving
+                // Explained why this is the case at the start of the script :)
                 this.player = null; // Reset player reference
             }
             // Check for fellow enemies
@@ -117,52 +121,42 @@ public class BasicEnemyAI : MonoBehaviour
     }
 
 
-    Collider2D CheckForPlayer()
+    Collider2D CheckForPlayer() // Check for players via a circle overlap, and then finding the first player instance (there should only be one.)
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRange);
         foreach (var hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Player"))
             {
-                // check to see if we can see the player
-                // Vector2 directionToPlayer = (hitCollider.transform.position - transform.position).normalized;
-                // RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, detectionRange);
-                // if (hit.collider != null && hit.collider.CompareTag("Player"))
-                // {
-                //     // Player is detected, implement behavior here
-                //     //Debug.Log("Player detected by Gonk enemy!");
-                //     // Example: Move towards the player
-                //     return hitCollider;
-                // }
-                return hitCollider; // Return the player collider if detected
+                
+                return hitCollider; 
             }
         }
         return null;
     }
 
-    Collider2D CheckForFellowEnemies()
+    Collider2D CheckForFellowEnemies() // Check to see if its close to fellow enemies via a circle overlap, if it is, return the closest one.
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+        Collider2D closestEnemy = null;
+        float closestDistance = float.MaxValue;
         foreach (var hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Enemy"))
             {
-                return hitCollider; // Return the player collider if detected
+                float distance = Vector2.Distance(transform.position, hitCollider.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = hitCollider;
+                }
             }
+        }
+        if (closestEnemy != null && closestDistance < detectionRange)
+        {
+            return closestEnemy;
         }
         return null;
     }
 
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerHealthSystem playerHealth = collision.gameObject.GetComponent<PlayerHealthSystem>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(10); // Example damage value
-            }
-        }
-    }
 }

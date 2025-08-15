@@ -4,8 +4,8 @@ using UnityEngine;
 public class GunSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public Transform barrel;
-    public GameObject bulletPrefab;
+    public Transform barrel; // Where the bullets come from
+    public GameObject bulletPrefab; // Bullet itself
     public float bulletSpeed = 20f;
     public float fireRate = 0.5f; 
     public int bulletsPerShot = 1; 
@@ -18,7 +18,7 @@ public class GunSystem : MonoBehaviour
     public AudioClip fireSound; // Sound to play when firing
     public AudioClip reloadSound; // Sound to play when reloading
 
-    public bool belongsToPlayer = false; 
+    public bool belongsToPlayer = false; // This is a cruicial boolean. Since the Gun system is universal, it is utilised by both players and enemies. However, this is required so we know to only boost the mag size of the player if the player has a mag mod installed during their run.
     
     [SerializeField] private int _currentAmmo = 0;
     public int currentAmmo
@@ -53,7 +53,7 @@ public class GunSystem : MonoBehaviour
         }
     }
 
-    IEnumerator reloadCoroutine()
+    IEnumerator reloadCoroutine() // Relaod the gun
     {
         isReloading = true;
         
@@ -79,7 +79,7 @@ public class GunSystem : MonoBehaviour
             isTriggered = buttonState;
             if (buttonState && autoFireCoroutine == null)
             {
-                autoFireCoroutine = StartCoroutine(AutoFire());
+                autoFireCoroutine = StartCoroutine(AutoFire()); // We have to know what the firing coroutine is so we can turn it off when the trigger is released.
             }
             else if (!buttonState && autoFireCoroutine != null)
             {
@@ -126,21 +126,12 @@ public class GunSystem : MonoBehaviour
         for (int i = 0; i < bulletsPerShot; i++)
         {
             float angle = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);
-            Quaternion bulletRotation = Quaternion.Euler(0, 0, angle) * barrel.rotation;
+            Quaternion bulletRotation = Quaternion.Euler(0, 0, angle) * barrel.rotation; // Give the bullet a random spread angle.
             GameObject bullet = Instantiate(bulletPrefab, barrel.position, bulletRotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = bulletRotation * Vector2.right * bulletSpeed;
             float modifiedDamage = damage;
-            float totalDamageModifier = 1f;
-            if (belongsToPlayer)
-            {
-                totalDamageModifier = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("damage") ?? 1f;
-            }
-            else
-            {
-                totalDamageModifier = GetComponent<Modifiers>()?.GetModValuesForAllTypesEquiped("enemyDamage") ?? 1f;
-            }
-
+            // btw, damage used to be calculated manually, as in hardcoded via the gun. Bullets now handle it based on the health system that the bullet interacts with.
             bullet.GetComponent<BulletSystem>().damage = modifiedDamage;
             Destroy(bullet, 30f); // Destroy bullet after 30 seconds to prevent memory leaks
         }

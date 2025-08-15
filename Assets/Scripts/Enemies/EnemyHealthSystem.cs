@@ -47,10 +47,11 @@ public class EnemyHealthSystem : MonoBehaviour
     {
         Debug.Log("Enemy died");
         // Add death logic here, such as playing an animation or destroying the object
-        PlayerCurrencyManager playerCurrencyManager = FindFirstObjectByType<PlayerCurrencyManager>();
+        PlayerCurrencyManager playerCurrencyManager = FindFirstObjectByType<PlayerCurrencyManager>(); // find the currency manager
+        
         if (playerCurrencyManager != null)
         {
-            playerCurrencyManager.AddCredits(rewardOnDeath);
+            playerCurrencyManager.AddCredits(rewardOnDeath); //reward
             Debug.Log($"Player rewarded with {rewardOnDeath} credits.");
         }
         else

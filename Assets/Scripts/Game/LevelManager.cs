@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Level manager serves as the system for managing transtioning between scenes for my game. 
     public Animator transitionAnimator;
     public float transitionTime = 1f;
     void Start()

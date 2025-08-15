@@ -3,19 +3,9 @@ using UnityEngine;
 public class WShopUIInteraction : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Toggles the shop UI on or off every time the player either leaves or exits the shop
 
     public GameObject shopCanvasUI; // Reference to the shop UI canvas
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     
     public void OnTriggerEnter2D(Collider2D other)
     {

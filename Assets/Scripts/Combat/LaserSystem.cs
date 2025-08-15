@@ -4,6 +4,7 @@ using UnityEngine;
 public class LaserSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // A system that mimiks the laser of a real laser pointer for guns. This is used for the super accurate weapon the sniper, to ensure players can line up their shots right, since the entire premise of that gun is to make sure that they can chain shots to kill multiple enemies in one bullet
     public LineRenderer lineRenderer;
     public Transform laserOrigin;
     public float laserLength = 10000f; // Maximum length of the laser
@@ -43,7 +44,7 @@ public class LaserSystem : MonoBehaviour
     {
         if (laserOrigin == null) return;
 
-        // Use 2D raycast for 2D games - change to Physics.Raycast for 3D
+        // Raycast, like a real laser would.
         RaycastHit2D hit = Physics2D.Raycast(laserOrigin.position, laserOrigin.right, laserLength, hitLayers);
         
         Vector3 endPosition;
@@ -56,7 +57,7 @@ public class LaserSystem : MonoBehaviour
         {
             endPosition = laserOrigin.position + laserOrigin.right * laserLength; // Default end position
         }
-        
+        // actually render that laser
         lineRenderer.SetPosition(0, laserOrigin.position);
         lineRenderer.SetPosition(1, endPosition);
     }

@@ -17,8 +17,12 @@ public class EnemyType
 public class GameSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // I love the video game
-
+    // Game system: handles spawning
+    // Spawning is done first by grabbing a valid location and then instantiating the enemy prefab at that location.
+    // An enemy is chosen by grabbing from the available enemy types based on their spawn chance and the current wave level.
+    // The system ensures that the number of active enemies does not exceed the maximum limit.
+    // The limit of how many is spawn increases based of the wave level, so the higher the wave, the more enemies there is, making the game harder
+    
 
     public EnemyType[] enemyTypes; // Array of enemy types to spawn
     public int maxEnemyCount = 10; //private int currentEnemyCount = 0;

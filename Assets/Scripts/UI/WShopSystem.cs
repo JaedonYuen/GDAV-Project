@@ -17,6 +17,8 @@ public class WeaponItem
 
 public class WShopSystem : MonoBehaviour
 {
+
+    // Treat this as the weapons shop keeper, displays current available weapons for purchase, and then sells them to you, just like a shop keeper. 
     public PlayerCurrencyManager playerCurrencyManager; // Reference to the player's currency manager
 
     public List<WeaponItem> shopItems; // List of items available in the shop
@@ -35,11 +37,11 @@ public class WShopSystem : MonoBehaviour
 
         if (shopContainerUI != null)
         {
-            foreach (var item in shopItems)
+            foreach (var item in shopItems) // Dynamically create buttons for each shop item
             {
                 GameObject button = Instantiate(shopButtonPrefab, shopContainerUI.transform);
                 button.GetComponentInChildren<TextMeshProUGUI>().text = $"{item.itemName} - {item.price} C";
-                button.GetComponent<Button>().onClick.AddListener(() => PurchaseItem(item.itemName));
+                button.GetComponent<Button>().onClick.AddListener(() => PurchaseItem(item.itemName)); 
             }
         }
         else

@@ -5,14 +5,12 @@ using Unity.VisualScripting;
 public class GunHud : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Displays the ammo count of the gun in the hand
     public HandSystem playerHand;
     public TextMeshProUGUI ammoCountText;
     public Slider ammoSlider;
     public float lerpSpeed = 5f; // Speed of the slider lerp
-    void Start()
-    {
-        
-    }
+    
 
     // Update is called once per frame
     void Update()

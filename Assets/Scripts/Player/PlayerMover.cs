@@ -6,13 +6,14 @@ using UnityEngine.InputSystem;
 public class PlayerMover : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //top down movement, uses the new Unity Input System
+    // Handles player movement. WASD to move, Space to dash.
+    // top down movement, uses the new Unity Input System
     public Rigidbody2D playerRigidbody;
-    public float speed = 5f;
-    public float dashSpeed = 10f;
+    public float speed = 5f; // Player speed
+    public float dashSpeed = 10f; // Force of the dash (side note: 10 is too little)
     public float dashDuration = 0.2f; // Duration of the dash in seconds
     public float dashCooldown = 1f;
-    public Transform arm;
+    public Transform arm; 
     public SpriteRenderer armSprite;
     //public PlayerModifiers playerModifiers; // Reference to PlayerModifiers script
     public Modifiers playerModifiers;
@@ -67,9 +68,7 @@ public class PlayerMover : MonoBehaviour
             spriteRenderer.flipX = true; // Face left
             armSprite.sortingOrder = -1; // Ensure arm is behind
         }
-        // point player to mouse
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        arm.transform.right = mousePosition - (Vector2)arm.transform.position;
+        
 
     }
 

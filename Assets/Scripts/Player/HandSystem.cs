@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 public class HandSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Points the hand to the player's position.
+    // Also handles grabbing, firing and droping of weapons.
+    public Transform arm;
     public Transform hand;
     public GameObject itemInhand;
     public float interactionRange = 1f; // Range for interaction
@@ -15,7 +18,9 @@ public class HandSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // point player's arm to mouse
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        arm.transform.right = mousePosition - (Vector2)arm.transform.position;
     }
 
 

@@ -3,6 +3,7 @@ using System.Collections;
 public class PlayerHealthSystem : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Manages health for the player
     public float maxHealth = 100f; // Maximum health of the player
     public float currentHealth;
     public GameObject gameOverScreen; // Reference to the game over screen UI

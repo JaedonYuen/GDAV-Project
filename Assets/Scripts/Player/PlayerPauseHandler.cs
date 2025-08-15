@@ -3,8 +3,9 @@ using UnityEngine;
 public class PlayerPauseHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Handles player pausing and unpausing.
     public PauseMenuSystem pauseMenu;
-
+    
     // Hello. If you are wondering: why the heck is this under the player? well, unity's input system is uber weird and only likes having one player input handler, so this goes in to the player. 
 
     void Start()

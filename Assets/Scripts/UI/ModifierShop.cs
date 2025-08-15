@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class ModifierShop : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Treat this as the shop keeper for modifiers. It will handle displaying and managing modifiers, as well as purchasing them, just like a shop keeper would. 
     public Modifiers modifiers; // Reference to the Modifiers script
     public GameSystem gameSystem; // Reference to the GameSystem script
     public GameObject modifierButtonPrefab; // Prefab for the modifier button
@@ -22,11 +23,6 @@ public class ModifierShop : MonoBehaviour
         DisplayEquippedModifiers();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void PopulateModifierShop()
     {
@@ -53,16 +49,16 @@ public class ModifierShop : MonoBehaviour
             }
             
             // Create a button for the modifier
-                GameObject button = Instantiate(modifierButtonPrefab, modifierButtonContainer);
+            GameObject button = Instantiate(modifierButtonPrefab, modifierButtonContainer);
             button.GetComponentInChildren<TextMeshProUGUI>().text = $"{selectedModifier.name} - {selectedModifier.cost} C";
             button.GetComponent<Button>().onClick.AddListener(() => OnShopModifierButtonClicked(selectedModifier, button));
-            // Add hover effect
+            // Add hover event so that the description text is updated
             button.GetComponent<EventTrigger>().triggers.Add(new EventTrigger.Entry
             {
                 eventID = EventTriggerType.PointerEnter,
                 callback = new EventTrigger.TriggerEvent()
             });
-            button.GetComponent<EventTrigger>().triggers[0].callback.AddListener((eventData) => { OnShopModifierButtonHover(selectedModifier, button); });
+            button.GetComponent<EventTrigger>().triggers[0].callback.AddListener((eventData) => { OnShopModifierButtonHover(selectedModifier); });
 
             GameObject icon = button.transform.Find("Icon").gameObject;
             if (icon != null)
@@ -79,7 +75,7 @@ public class ModifierShop : MonoBehaviour
         }
     }
 
-    void OnShopModifierButtonHover(Modifier modifier, GameObject button)
+    void OnShopModifierButtonHover(Modifier modifier) // Display mod's description. The mod title color will be based on if the player can afford it.
     {
         // Display the modifier's description
         if (descriptionText != null)

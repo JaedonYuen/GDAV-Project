@@ -23,7 +23,7 @@ public class PauseMenuSystem : MonoBehaviour
 
     }
     
-    public void TogglePause()
+    public void TogglePause() // Toggle on or off the pausing of the game. time scale basically manipulates the game speed, so setting it to 0 will pause the game. 
     {
         paused = !paused;
         if (paused)
