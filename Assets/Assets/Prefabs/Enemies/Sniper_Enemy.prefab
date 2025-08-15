@@ -823,7 +823,7 @@ MonoBehaviour:
   reloadTime: 1
   damage: 100
   fireSound: {fileID: 8300000, guid: 7ceb2c1b8bc777949859d050c7f5749c, type: 3}
-  reloadSound: {fileID: 0}
+  reloadSound: {fileID: 8300000, guid: d52837600af7c5d4cab7b810ee171c26, type: 3}
   belongsToPlayer: 0
   _currentAmmo: 0
 --- !u!114 &8453933380386583378
@@ -1131,3 +1131,4 @@ MonoBehaviour:
   enemyRigidbody: {fileID: 0}
   enemyWeaponSystem: {fileID: 3374571729530425323}
   enemyArm: {fileID: 7419273570034700787}
+  enemyBodySprite: {fileID: 3165059823914999581}

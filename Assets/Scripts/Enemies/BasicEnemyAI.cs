@@ -16,6 +16,7 @@ public class BasicEnemyAI : MonoBehaviour
     public Rigidbody2D enemyRigidbody;
     public GunSystem enemyWeaponSystem; // Reference to the enemy's weapon system
     public Transform enemyArm;
+    public SpriteRenderer enemyBodySprite; //Sprite for the body
     
 
     private GameObject player; // Reference to the player GameObject
@@ -54,6 +55,15 @@ public class BasicEnemyAI : MonoBehaviour
         {
             // If the player is not detected, reset the arm direction
             enemyArm.right = Vector2.right; // Reset to default direction
+        }
+
+        if (enemyRigidbody.linearVelocity.x < 0)
+        {
+            enemyBodySprite.flipX = true; // Flip the sprite to face left
+        }
+        else
+        { 
+            enemyBodySprite.flipX = false; // Face right
         }
         
     }

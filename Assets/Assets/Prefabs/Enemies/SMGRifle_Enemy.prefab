@@ -311,7 +311,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.52, y: 0.62}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -745,6 +745,7 @@ MonoBehaviour:
   enemyRigidbody: {fileID: 0}
   enemyWeaponSystem: {fileID: 3270186788103107741}
   enemyArm: {fileID: 384843056442193880}
+  enemyBodySprite: {fileID: 6616351211790600360}
 --- !u!1 &6811213282451306101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1001,6 @@ MonoBehaviour:
   reloadTime: 1
   damage: 15
   fireSound: {fileID: 8300000, guid: 1872671e267a6f04794e2c30589993e8, type: 3}
-  reloadSound: {fileID: 0}
+  reloadSound: {fileID: 8300000, guid: d52837600af7c5d4cab7b810ee171c26, type: 3}
   belongsToPlayer: 0
   _currentAmmo: 0

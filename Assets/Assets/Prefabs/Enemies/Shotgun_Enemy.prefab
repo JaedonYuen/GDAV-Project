@@ -264,6 +264,7 @@ MonoBehaviour:
   enemyRigidbody: {fileID: 4674758896371711552}
   enemyWeaponSystem: {fileID: 8207700738158822971}
   enemyArm: {fileID: 7122925086325140080}
+  enemyBodySprite: {fileID: 1083047581493891544}
 --- !u!1 &1006932799346233449
 GameObject:
   m_ObjectHideFlags: 0

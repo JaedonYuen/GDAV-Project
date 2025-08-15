@@ -22,7 +22,7 @@ public class GameSystem : MonoBehaviour
     // An enemy is chosen by grabbing from the available enemy types based on their spawn chance and the current wave level.
     // The system ensures that the number of active enemies does not exceed the maximum limit.
     // The limit of how many is spawn increases based of the wave level, so the higher the wave, the more enemies there is, making the game harder
-    
+
 
     public EnemyType[] enemyTypes; // Array of enemy types to spawn
     public int maxEnemyCount = 10; //private int currentEnemyCount = 0;
@@ -35,6 +35,8 @@ public class GameSystem : MonoBehaviour
     public Transform levelCenter;
 
     public GameObject barrier;
+
+    public GameObject bossEnemy; // Only had time for one boss, since i had to make the assets myself.
 
     private bool waveActive = false; // Flag to check if a wave is currently active
 
@@ -74,16 +76,28 @@ public class GameSystem : MonoBehaviour
         // Spawn enemies based on the current wave level
         for (int i = 0; i < (maxEnemyCount+((maxEnemyCount/2)*_currentWaveLevel)); i++)
         {
-            // Choose a random enemy type based on spawn chance and wave level
-            EnemyType enemyType = chooseEnemyType();
-            if (enemyType != null)
+
+            // Check if the wave is a multiple of 4 and check if this is the final enemy spawned in
+            if (_currentWaveLevel % 4 == 0 && i == (maxEnemyCount + ((maxEnemyCount / 2) * _currentWaveLevel)) - 1)
             {
                 Vector3 spawnPosition = GetRandomSpawnPosition();
-                Instantiate(enemyType.prefab, spawnPosition, Quaternion.identity);
+                Instantiate(bossEnemy, spawnPosition, Quaternion.identity);
             }
+            else
+            {
+                // Choose a random enemy type based on spawn chance and wave level
+                EnemyType enemyType = chooseEnemyType();
+                if (enemyType != null)
+                {
+                    Vector3 spawnPosition = GetRandomSpawnPosition();
+                    Instantiate(enemyType.prefab, spawnPosition, Quaternion.identity);
+                }
+            }
+            
 
-            // Wait for the spawn interval before spawning the next set of enemies
-            yield return new WaitForSeconds(UnityEngine.Random.Range(spawnIntervalRange.x, spawnIntervalRange.y));
+
+                // Wait for the spawn interval before spawning the next set of enemies
+                yield return new WaitForSeconds(UnityEngine.Random.Range(spawnIntervalRange.x, spawnIntervalRange.y));
         }
         barrier.SetActive(false);
         waveActive = false;
